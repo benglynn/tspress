@@ -1,0 +1,25 @@
+{
+  "name": "@benglynn/tspress",
+  "version": "1.0.0-alpha.0",
+  "description": "TypeScript experiment with new Press compiler architecture",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benglynn/tspress.git"
+  },
+  "keywords": [
+    "typescript",
+    "press"
+  ],
+  "author": "Ben Glynn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benglynn/tspress/issues"
+  },
+  "homepage": "https://github.com/benglynn/tspress#readme",
+  "devDependencies": {},
+  "dependencies": {}
+}
