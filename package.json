@@ -4,6 +4,7 @@
   "description": "TypeScript experiment with new Press compiler architecture",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "test": "mocha"
   },
   "repository": {
@@ -20,6 +21,8 @@
     "url": "https://github.com/benglynn/tspress/issues"
   },
   "homepage": "https://github.com/benglynn/tspress#readme",
-  "devDependencies": {},
+  "devDependencies": {
+    "typescript": "^3.9.6"
+  },
   "dependencies": {}
 }
