@@ -1,3 +1,1 @@
-import message from "./data";
-
-export default () => message;
+export { default as press } from "./press";

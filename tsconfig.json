@@ -1,8 +1,18 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "outDir": "dist"
-  },
-  "files": [ "./src/api.ts" ]
+    "compilerOptions": {
+        "declaration": true,
+        "strict": true,
+        "module": "commonjs",
+        "target": "es2019",
+        "jsx": "preserve",
+        "sourceMap": true,
+        "outDir": "dist"
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
 }

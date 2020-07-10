@@ -2,10 +2,12 @@
   "name": "@benglynn/tspress",
   "version": "1.0.0-alpha.0",
   "description": "TypeScript experiment with new Press compiler architecture",
-  "main": "index.js",
+  "main": "dist/api.js",
+  "types": "dist/api.d.ts",
   "scripts": {
-    "build": "tsc",
-    "test": "mocha -r ts-node/register src/**/*.spec.ts"
+    "prepublishOnly": "npm run build",
+    "build": "rm ./dist/* & tsc",
+    "test": "mocha -r ts-node/register test/**/*.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,7 @@
   "devDependencies": {
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
+    "@types/node": "^14.0.21",
     "chai": "^4.2.0",
     "mocha": "^8.0.1",
     "ts-node": "^8.10.2",
