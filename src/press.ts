@@ -1,21 +1,20 @@
-import directories from "./directories";
+import { file, directories } from "./util";
 import { join } from "path";
 import Page from "./page";
 import PageReducer from "./page-reducer";
-import Pressed from "./pressed";
 
-function press<T>(
+function press<TContext>(
   directory: string,
-  seed: T,
-  reducers: { [K in keyof T]: PageReducer<T[K]> },
+  seed: TContext,
+  reducers: { [K in keyof TContext]: PageReducer<TContext[K]> },
   name = "",
   path = "/",
   pages: Page[] = []
-): Pressed<T> {
-  const mdMeta = { fake: "for now" };
-  const page = { name, path, md: "# Fake for now", mdMeta };
+): [Page[], TContext] {
+  const md = file(join(directory, "index.md"));
+  const page = { name, path, md };
   const nextPages = pages.concat(page);
-  const reduced = <T>(
+  const context = <TContext>(
     Object.fromEntries(
       Object.entries<PageReducer<any>>(reducers).map(([key, pageReducer]) => [
         key,
@@ -24,16 +23,16 @@ function press<T>(
     )
   );
   return directories(directory).reduce(
-    (pressed, dir) =>
+    ([pages, context], dir) =>
       press(
         join(directory, dir.name),
-        pressed.reduced,
+        context,
         reducers,
         dir.name,
         `${path}${dir.name}/`,
-        pressed.pages
+        pages
       ),
-    <Pressed<T>>{ pages: nextPages, reduced }
+    [nextPages, context]
   );
 }
 

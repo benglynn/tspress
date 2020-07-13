@@ -1,5 +1,7 @@
 import Page from "./page";
 
-type PageReducer<T> = (page: Page, previous: T) => T;
+interface PageReducer<TReduced> {
+  (page: Page, previous: TReduced): TReduced;
+}
 
 export default PageReducer;
