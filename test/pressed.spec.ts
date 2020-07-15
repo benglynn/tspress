@@ -32,6 +32,22 @@ describe("press", () => {
         pageCount: 3,
       });
     });
+
+    it("should fold context with async reducers", async () => {
+      const { initial, reducers, fixturePath } = setup();
+      const asyncReducers = {
+        names: (page: Page, previous: string[]) =>
+          Promise.resolve(previous.concat(page.name)),
+        pageCount: (page: Page, previous: number) =>
+          Promise.resolve(previous + 1),
+      };
+      const [pages, context] = await press(fixturePath, initial, asyncReducers);
+      expect(pages).to.deep.equal(pressed);
+      expect(context).to.deep.equal({
+        names: ["", "french-press", "tea-pot"],
+        pageCount: 3,
+      });
+    });
   });
 
   describe("asPipe", () => {

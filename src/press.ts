@@ -14,12 +14,14 @@ async function press<TContext>(
   const md = file(join(directory, "index.md"));
   const page = { name, path, md };
   const nextPages = pages.concat(page);
-  const context = <TContext>(
+  const nextContext = <TContext>(
     Object.fromEntries(
-      Object.entries<PageReducer<any>>(reducers).map(([key, pageReducer]) => [
-        key,
-        pageReducer(page, (<any>seed)[key]),
-      ])
+      await Promise.all(
+        Object.entries<PageReducer<any>>(reducers).map(
+          async ([key, pageReducer]) =>
+            <[string, any]>[key, await pageReducer(page, (<any>seed)[key])]
+        )
+      )
     )
   );
   return directories(directory).reduce(async (previous, dir) => {
@@ -32,7 +34,7 @@ async function press<TContext>(
       `${path}${dir.name}/`,
       pages
     );
-  }, Promise.resolve(<[Page[], TContext]>[nextPages, context]));
+  }, Promise.resolve(<[Page[], TContext]>[nextPages, nextContext]));
 }
 
 export default press;
