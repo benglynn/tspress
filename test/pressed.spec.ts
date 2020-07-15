@@ -63,7 +63,7 @@ describe("press", () => {
       const [pages, context] = await press(fixturePath, initial, reducers);
       const pipe = asPipe(pages, context);
 
-      const uppercase: P<Context, Page[], Page[]> = (pages) =>
+      const upper: P<Context, Page[], Page[]> = (pages) =>
         pages.map((page) => ({ ...page, name: page.name.toUpperCase() }));
 
       const starDashes: P<Context, Page[], Page[]> = (pages) =>
@@ -79,21 +79,24 @@ describe("press", () => {
         pages.map((page) => page.extra);
 
       const upNames = ["", "FRENCH-PRESS", "TEA-POT"];
-      expect(pipe(uppercase).map((page) => page.name)).to.deep.equal(upNames);
-
       const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
+      const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
+
+      expect((await pipe(upper)).map((page) => page.name)).to.deep.equal(
+        upNames
+      );
+
       expect(
-        pipe(uppercase, starDashes).map((page) => page.name)
+        (await pipe(upper, starDashes)).map((page) => page.name)
       ).to.deep.equal(starNames);
 
-      const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
       expect(
-        pipe(uppercase, starDashes, addContext).map((page) => page.extra)
+        (await pipe(upper, starDashes, addContext)).map((pg) => pg.extra)
       ).to.deep.equal(extra);
 
-      expect(pipe(uppercase, starDashes, addContext, justExtra)).to.deep.equal(
-        extra
-      );
+      expect(
+        await pipe(upper, starDashes, addContext, justExtra)
+      ).to.deep.equal(extra);
     });
   });
 });
