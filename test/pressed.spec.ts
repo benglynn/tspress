@@ -18,14 +18,14 @@ describe("press", () => {
   };
 
   describe("parse", () => {
-    it("should parse each directory", () => {
-      const [pages] = press(join(__dirname, "fixture"), {}, {});
+    it("should parse each directory", async () => {
+      const [pages] = await press(join(__dirname, "fixture"), {}, {});
       expect(pages).to.deep.equal(pressed);
     });
 
-    it("should fold context with reducers", () => {
+    it("should fold context with reducers", async () => {
       const { initial, reducers, fixturePath } = setup();
-      const [pages, context] = press(fixturePath, initial, reducers);
+      const [pages, context] = await press(fixturePath, initial, reducers);
       expect(pages).to.deep.equal(pressed);
       expect(context).to.deep.equal({
         names: ["", "french-press", "tea-pot"],
@@ -35,7 +35,7 @@ describe("press", () => {
   });
 
   describe("asPipe", () => {
-    it("creates a pipe that transforms through pipeables", () => {
+    it("creates a pipe that transforms through pipeables", async () => {
       interface Context {
         names: Array<string>;
         pageCount: number;
@@ -44,7 +44,8 @@ describe("press", () => {
         extra: string;
       }
       const { initial, reducers, fixturePath } = setup();
-      const pipe = asPipe(...press(fixturePath, initial, reducers));
+      const [pages, context] = await press(fixturePath, initial, reducers);
+      const pipe = asPipe(pages, context);
 
       const uppercase: P<Context, Page[], Page[]> = (pages) =>
         pages.map((page) => ({ ...page, name: page.name.toUpperCase() }));
