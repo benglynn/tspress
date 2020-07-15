@@ -2,9 +2,9 @@ import "mocha";
 import { expect } from "chai";
 import { join } from "path";
 import { press, asPipe } from "../src/api";
-import Page from "../src/page";
+import Page from "../src/types/page";
 import pressed from "./expected/pressed";
-import { default as P } from "../src/pipeable";
+import { default as P } from "../src/types/pipeable";
 
 describe("press", () => {
   const setup = () => {

@@ -1,6 +1,6 @@
-import Page from "./page";
-import Pipeable from "./pipeable";
-import Pipe from "./pipe";
+import Page from "./types/page";
+import Pipeable from "./types/pipeable";
+import Pipe from "./types/pipe";
 
 const asPipe = <TContext>(pages: Page[], context: TContext): Pipe<TContext> => {
   return (...pipeables: Array<Pipeable<TContext, any, any>>): Promise<any> =>

@@ -1,7 +1,7 @@
 import { file, directories } from "./util";
 import { join } from "path";
-import Page from "./page";
-import PageReducer from "./page-reducer";
+import Page from "./types/page";
+import PageReducer from "./types/page-reducer";
 
 async function press<TContext>(
   directory: string,
