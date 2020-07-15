@@ -7,7 +7,7 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "rm ./dist/* & tsc",
-    "test": "mocha -r ts-node/register test/**/*.spec.ts"
+    "test": "npx mocha --require ts-node/register --extensions ts,tsx --watch-files src,test 'test/**/*.{ts,tsx}'"
   },
   "repository": {
     "type": "git",
