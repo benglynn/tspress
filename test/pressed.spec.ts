@@ -4,7 +4,6 @@ import { join } from "path";
 import { press, makePipe } from "../src/api";
 import Page from "../src/types/page";
 import pressed from "./expected/pressed";
-import P from "../src/types/context-pipeable";
 
 interface Context {
   names: Array<string>;
@@ -124,17 +123,16 @@ describe("press", () => {
       const upper = (pages: Page[]): Page[] =>
         pages.map((page) => ({ ...page, name: page.name.toUpperCase() }));
 
-      const starDashes: P<Context, Page[], Page[]> = (pages) =>
+      const starDashes = (pages: Page[]): Page[] =>
         pages.map((page) => ({ ...page, name: page.name.replace(/-/g, "*") }));
 
-      const addContext: P<Context, Page[], PageExtra[]> = (pages, context) =>
+      const addContext = (pages: Page[], context: Context) =>
         pages.map((page, index) => ({
           ...page,
           extra: `Page ${index + 1} of ${context.pageCount}`,
         }));
 
-      const justExtra: P<Context, PageExtra[], string[]> = (pages) =>
-        pages.map((page) => page.extra);
+      const justExtra = (pages: PageExtra[]) => pages.map((page) => page.extra);
 
       const upNames = ["", "FRENCH-PRESS", "TEA-POT"];
       const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
@@ -183,18 +181,15 @@ describe("press", () => {
         reducers
       );
 
-      const upper: P<Context, Page[], Promise<Page[]>> = (pages) =>
+      const upper = (pages: Page[]): Promise<Page[]> =>
         Promise.resolve(
           pages.map((page) => ({ ...page, name: page.name.toUpperCase() }))
         );
 
-      const starDashes: P<Context, Page[], Page[]> = (pages) =>
+      const starDashes = (pages: Page[]): Page[] =>
         pages.map((page) => ({ ...page, name: page.name.replace(/-/g, "*") }));
 
-      const addContext: P<Context, Page[], Promise<PageExtra[]>> = (
-        pages,
-        context
-      ) =>
+      const addContext = (pages: Page[], context: Context) =>
         Promise.resolve(
           pages.map((page, index) => ({
             ...page,
@@ -202,7 +197,7 @@ describe("press", () => {
           }))
         );
 
-      const justExtra: P<Context, PageExtra[], string[]> = (pages) =>
+      const justExtra = (pages: PageExtra[]): string[] =>
         pages.map((page) => page.extra);
 
       const upNames = ["", "FRENCH-PRESS", "TEA-POT"];
