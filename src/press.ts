@@ -1,40 +1,45 @@
 import { file, directories } from "./util";
 import { join } from "path";
 import Page from "./types/page";
-import PageReducer from "./types/page-reducer";
+import Pipeable from "./types/pipeable";
+import ItemReducer from "./types/item-reducer";
 
-async function press<TContext>(
+async function press<TItem, TContext>(
   directory: string,
+  items: TItem[] = [],
+  toItem: Pipeable<Page, TItem>,
   seed: TContext,
-  reducers: { [K in keyof TContext]: PageReducer<TContext[K]> },
+  reducers: { [K in keyof TContext]: ItemReducer<TItem, TContext[K]> },
   name = "",
-  path = "/",
-  pages: Page[] = []
-): Promise<[Page[], TContext]> {
+  path = "/"
+): Promise<[TItem[], TContext]> {
   const md = file(join(directory, "index.md"));
-  const page = { name, path, md };
-  const nextPages = pages.concat(page);
+  // TODO: `md` as `content` then `Page` as `File`
+  const page: Page = { name, path, md };
+  const item = await toItem(page);
+  const nextItems = items.concat(item);
   const nextContext = <TContext>(
     Object.fromEntries(
       await Promise.all(
-        Object.entries<PageReducer<any>>(reducers).map(
-          async ([key, pageReducer]) =>
-            <[string, any]>[key, await pageReducer(page, (<any>seed)[key])]
+        Object.entries<ItemReducer<TItem, any>>(reducers).map(
+          async ([key, itemReducer]) =>
+            <[string, any]>[key, await itemReducer(item, (<any>seed)[key])]
         )
       )
     )
   );
   return directories(directory).reduce(async (previous, dir) => {
-    const [pages, context] = await previous;
+    const [items, context] = await previous;
     return press(
       join(directory, dir.name),
+      items,
+      toItem,
       context,
       reducers,
       dir.name,
-      `${path}${dir.name}/`,
-      pages
+      `${path}${dir.name}/`
     );
-  }, Promise.resolve(<[Page[], TContext]>[nextPages, nextContext]));
+  }, Promise.resolve(<[TItem[], TContext]>[nextItems, nextContext]));
 }
 
 export default press;
