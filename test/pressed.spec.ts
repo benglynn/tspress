@@ -4,7 +4,7 @@ import { join } from "path";
 import { press, asPipe } from "../src/api";
 import Page from "../src/types/page";
 import pressed from "./expected/pressed";
-import { default as P } from "../src/types/pipeable";
+import P from "../src/types/context-pipeable";
 
 describe("press", () => {
   const setup = () => {
