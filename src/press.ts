@@ -2,10 +2,12 @@ import { file, directories } from "./util";
 import { join } from "path";
 import Page from "./types/page";
 import ItemReducer from "./types/item-reducer";
+import Pipe from "./types/pipe";
 
 async function press<TItem, TContext>(
   directory: string,
   items: TItem[] = [],
+  toItem: (p: Page) => TItem,
   seed: TContext,
   reducers: { [K in keyof TContext]: ItemReducer<TItem, TContext[K]> },
   name = "",
@@ -21,8 +23,8 @@ async function press<TItem, TContext>(
     Object.fromEntries(
       await Promise.all(
         Object.entries<ItemReducer<TItem, any>>(reducers).map(
-          async ([key, pageReducer]) =>
-            <[string, any]>[key, await pageReducer(item, (<any>seed)[key])]
+          async ([key, itemReducer]) =>
+            <[string, any]>[key, await itemReducer(item, (<any>seed)[key])]
         )
       )
     )
@@ -32,6 +34,7 @@ async function press<TItem, TContext>(
     return press(
       join(directory, dir.name),
       items,
+      toItem,
       context,
       reducers,
       dir.name,
