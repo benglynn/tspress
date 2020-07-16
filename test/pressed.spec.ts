@@ -99,20 +99,20 @@ describe("press", () => {
       const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
       const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
 
-      expect((await pipe(upper)).map((page) => page.name)).to.deep.equal(
+      expect((await pipe(upper)()).map((page) => page.name)).to.deep.equal(
         upNames
       );
 
       expect(
-        (await pipe(upper, starDashes)).map((page) => page.name)
+        (await pipe(upper, starDashes)()).map((page) => page.name)
       ).to.deep.equal(starNames);
 
       expect(
-        (await pipe(upper, starDashes, addContext)).map((pg) => pg.extra)
+        (await pipe(upper, starDashes, addContext)()).map((pg) => pg.extra)
       ).to.deep.equal(extra);
 
       expect(
-        await pipe(upper, starDashes, addContext, justExtra)
+        await pipe(upper, starDashes, addContext, justExtra)()
       ).to.deep.equal(extra);
     });
 
@@ -150,20 +150,20 @@ describe("press", () => {
       const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
       const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
 
-      expect((await pipe(upper)).map((page) => page.name)).to.deep.equal(
+      expect((await pipe(upper)()).map((page) => page.name)).to.deep.equal(
         upNames
       );
 
       expect(
-        (await pipe(upper, starDashes)).map((page) => page.name)
+        (await pipe(upper, starDashes)()).map((page) => page.name)
       ).to.deep.equal(starNames);
 
       expect(
-        (await pipe(upper, starDashes, addContext)).map((pg) => pg.extra)
+        (await pipe(upper, starDashes, addContext)()).map((pg) => pg.extra)
       ).to.deep.equal(extra);
 
       expect(
-        await pipe(upper, starDashes, addContext, justExtra)
+        await pipe(upper, starDashes, addContext, justExtra)()
       ).to.deep.equal(extra);
     });
   });
