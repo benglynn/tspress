@@ -1,5 +1,5 @@
-interface Pipeable<TContext, I, O> {
-  (input: I, context: TContext): O;
+interface Pipeable<I, O> {
+  (input: I, ...rest: any): O;
 }
 
 export default Pipeable;
