@@ -10,6 +10,9 @@ interface Context {
   names: Array<string>;
   pageCount: number;
 }
+interface PageExtra extends Page {
+  extra: string;
+}
 
 describe("press", () => {
   const setup = () => {
@@ -68,6 +71,33 @@ describe("press", () => {
         pageCount: 3,
       });
     });
+
+    it("transforms each page", async () => {
+      const { fixturePath } = setup();
+      const toItem = (page: Page): PageExtra => ({ ...page, extra: "sauce" });
+      const [pages] = await press(fixturePath, [], toItem, {}, {});
+      const expected = ["sauce", "sauce", "sauce"];
+      expect(pages.map((page) => page.extra)).to.deep.equal(expected);
+    });
+
+    it("transforms pages with a pipe", async () => {
+      const { fixturePath } = setup();
+      const pipeable = (page: Page): PageExtra => ({ ...page, extra: "pipe" });
+      const pipe = makePipe<Page, PageExtra, null>()(pipeable);
+      const [pages] = await press(fixturePath, [], pipe, {}, {});
+      const expected = ["pipe", "pipe", "pipe"];
+      expect(pages.map((page) => page.extra)).to.deep.equal(expected);
+    });
+
+    it("transforms pages with an async pipe", async () => {
+      const { fixturePath } = setup();
+      const pipeable = (page: Page): Promise<PageExtra> =>
+        Promise.resolve({ ...page, extra: "async pipe" });
+      const pipe = makePipe<Page, PageExtra, null>()(pipeable);
+      const [pages] = await press(fixturePath, [], pipe, {}, {});
+      const expected = ["async pipe", "async pipe", "async pipe"];
+      expect(pages.map((page) => page.extra)).to.deep.equal(expected);
+    });
   });
 
   describe("makePipe", () => {
@@ -81,9 +111,6 @@ describe("press", () => {
       interface Context {
         names: Array<string>;
         pageCount: number;
-      }
-      interface PageExtra extends Page {
-        extra: string;
       }
       const { items, toItem, seed, reducers, fixturePath } = setup();
       const [pages, context] = await press(
