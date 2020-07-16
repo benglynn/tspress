@@ -5,11 +5,11 @@ import PageReducer from "./types/page-reducer";
 
 async function press<TItem, TContext>(
   directory: string,
+  items: TItem[] = [],
   seed: TContext,
   reducers: { [K in keyof TContext]: PageReducer<TItem, TContext[K]> },
   name = "",
-  path = "/",
-  items: TItem[] = []
+  path = "/"
 ): Promise<[TItem[], TContext]> {
   const md = file(join(directory, "index.md"));
   const page: Page = { name, path, md }; // TODO: `md` as `content` the `Page` as `File`
@@ -28,14 +28,14 @@ async function press<TItem, TContext>(
     )
   );
   return directories(directory).reduce(async (previous, dir) => {
-    const [pages, context] = await previous;
+    const [items, context] = await previous;
     return press(
       join(directory, dir.name),
+      items,
       context,
       reducers,
       dir.name,
-      `${path}${dir.name}/`,
-      pages
+      `${path}${dir.name}/`
     );
   }, Promise.resolve(<[TItem[], TContext]>[nextItems, nextContext]));
 }

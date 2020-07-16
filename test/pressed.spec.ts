@@ -13,28 +13,25 @@ interface Context {
 
 describe("press", () => {
   const setup = () => {
-    const initial = { names: <string[]>[], pageCount: 0 };
+    const items: Page[] = [];
+    const seed = { names: <string[]>[], pageCount: 0 };
     const reducers = {
       names: (page: Page, previous: string[]) => previous.concat(page.name),
       pageCount: (page: Page, previous: number) => previous + 1,
     };
     const fixturePath = join(__dirname, "fixture");
-    return { initial, reducers, fixturePath };
+    return { items, seed, reducers, fixturePath };
   };
 
   describe("parse", () => {
     it("should parse each directory", async () => {
-      const [pages] = await press(join(__dirname, "fixture"), {}, {});
+      const [pages] = await press(join(__dirname, "fixture"), [], {}, {});
       expect(pages).to.deep.equal(pressed);
     });
 
     it("should fold context with reducers", async () => {
-      const { initial, reducers, fixturePath } = setup();
-      const [pages, context] = await press<Page, Context>(
-        fixturePath,
-        initial,
-        reducers
-      );
+      const { items, seed, reducers, fixturePath } = setup();
+      const [pages, context] = await press(fixturePath, items, seed, reducers);
       expect(pages).to.deep.equal(pressed);
       expect(context).to.deep.equal({
         names: ["", "french-press", "tea-pot"],
@@ -43,16 +40,17 @@ describe("press", () => {
     });
 
     it("should fold context with async reducers", async () => {
-      const { initial, reducers, fixturePath } = setup();
+      const { items, seed, fixturePath } = setup();
       const asyncReducers = {
         names: (page: Page, previous: string[]) =>
           Promise.resolve(previous.concat(page.name)),
         pageCount: (page: Page, previous: number) =>
           Promise.resolve(previous + 1),
       };
-      const [pages, context] = await press<Page, Context>(
+      const [pages, context] = await press(
         fixturePath,
-        initial,
+        items,
+        seed,
         asyncReducers
       );
       expect(pages).to.deep.equal(pressed);
@@ -78,12 +76,8 @@ describe("press", () => {
       interface PageExtra extends Page {
         extra: string;
       }
-      const { initial, reducers, fixturePath } = setup();
-      const [pages, context] = await press<Page, Context>(
-        fixturePath,
-        initial,
-        reducers
-      );
+      const { items, seed, reducers, fixturePath } = setup();
+      const [pages, context] = await press(fixturePath, items, seed, reducers);
       const pipe = asPipe(pages, context);
 
       const upper: P<Context, Page[], Page[]> = (pages) =>
@@ -126,12 +120,8 @@ describe("press", () => {
       interface PageExtra extends Page {
         extra: string;
       }
-      const { initial, reducers, fixturePath } = setup();
-      const [pages, context] = await press<Page, Context>(
-        fixturePath,
-        initial,
-        reducers
-      );
+      const { items, seed, reducers, fixturePath } = setup();
+      const [pages, context] = await press(fixturePath, items, seed, reducers);
       const pipe = asPipe(pages, context);
 
       const upper: P<Context, Page[], Promise<Page[]>> = (pages) =>
