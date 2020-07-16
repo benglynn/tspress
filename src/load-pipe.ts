@@ -1,14 +1,11 @@
-import Page from "./types/page";
 import Pipeable from "./types/pipeable";
 import Pipe from "./types/pipe";
 
-const loadPipe = (pages: Page[], ...params: any[]): Pipe<Page[]> => {
-  return (
-    ...pipeables: Array<Pipeable<any, any>>
-  ): (() => Promise<any>) => () =>
-    pipeables.reduce<any>(async (previous, pipe) => {
-      const piped = pipe(await previous, ...params);
-      return (piped instanceof Promise && piped) || Promise.resolve(piped);
-    }, pages);
-};
+const loadPipe = <TStart, TEnd, TContext>(): Pipe<TStart, TEnd, TContext> => (
+  ...pipeables: Array<Pipeable<any, any>>
+) => (start: TStart, context: TContext) =>
+  pipeables.reduce<any>(async (previous, pipe) => {
+    const piped = pipe(await previous, context);
+    return (piped instanceof Promise && piped) || Promise.resolve(piped);
+  }, start);
 export default loadPipe;

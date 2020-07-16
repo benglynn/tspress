@@ -63,7 +63,7 @@ describe("press", () => {
 
   describe("loadPipe", () => {
     it("returns a function", async () => {
-      expect(loadPipe([], {})).to.be.a("function");
+      expect(loadPipe()).to.be.a("function");
     });
   });
 
@@ -78,7 +78,6 @@ describe("press", () => {
       }
       const { items, seed, reducers, fixturePath } = setup();
       const [pages, context] = await press(fixturePath, items, seed, reducers);
-      const loadedPipe = loadPipe(pages, context);
 
       const upper: P<Context, Page[], Page[]> = (pages) =>
         pages.map((page) => ({ ...page, name: page.name.toUpperCase() }));
@@ -98,23 +97,32 @@ describe("press", () => {
       const upNames = ["", "FRENCH-PRESS", "TEA-POT"];
       const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
       const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
-
+      const pipeThrough = loadPipe<Page[], Page[], Context>();
       expect(
-        (await loadedPipe(upper)()).map((page) => page.name)
+        (await pipeThrough(upper)(pages, context)).map((page) => page.name)
       ).to.deep.equal(upNames);
 
       expect(
-        (await loadedPipe(upper, starDashes)()).map((page) => page.name)
+        (await pipeThrough(upper, starDashes)(pages, context)).map(
+          (page) => page.name
+        )
       ).to.deep.equal(starNames);
 
+      const pipeExtra = loadPipe<Page[], PageExtra[], Context>();
       expect(
-        (await loadedPipe(upper, starDashes, addContext)()).map(
+        (await pipeExtra(upper, starDashes, addContext)(pages, context)).map(
           (pg) => pg.extra
         )
       ).to.deep.equal(extra);
 
+      const pipeString = loadPipe<Page[], string[], Context>();
       expect(
-        await loadedPipe(upper, starDashes, addContext, justExtra)()
+        await pipeString(
+          upper,
+          starDashes,
+          addContext,
+          justExtra
+        )(pages, context)
       ).to.deep.equal(extra);
     });
 
@@ -124,7 +132,6 @@ describe("press", () => {
       }
       const { items, seed, reducers, fixturePath } = setup();
       const [pages, context] = await press(fixturePath, items, seed, reducers);
-      const pipe = loadPipe(pages, context);
 
       const upper: P<Context, Page[], Promise<Page[]>> = (pages) =>
         Promise.resolve(
@@ -152,21 +159,26 @@ describe("press", () => {
       const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
       const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
 
-      const upperPipe = pipe(upper);
-      expect((await upperPipe()).map((page) => page.name)).to.deep.equal(
-        upNames
-      );
-
+      const pipeThrough = loadPipe<Page[], Page[], Context>();
+      const upperPipe = pipeThrough(upper);
       expect(
-        (await pipe(upper, starDashes)()).map((page) => page.name)
+        (await upperPipe(pages, context)).map((page) => page.name)
+      ).to.deep.equal(upNames);
+
+      const starPipe = pipeThrough(upper, starDashes);
+      expect(
+        (await starPipe(pages, context)).map((page) => page.name)
       ).to.deep.equal(starNames);
 
+      const pipeExtra = loadPipe<Page[], PageExtra[], Context>();
+      const extraPipe = pipeExtra(upper, starDashes, addContext);
       expect(
-        (await pipe(upper, starDashes, addContext)()).map((pg) => pg.extra)
+        (await extraPipe(pages, context)).map((pg) => pg.extra)
       ).to.deep.equal(extra);
 
-      const longerPipe = pipe(upper, starDashes, addContext, justExtra);
-      expect(await longerPipe()).to.deep.equal(extra);
+      const pipeString = loadPipe<Page[], string[], Context>();
+      const stringPipe = pipeString(upper, starDashes, addContext, justExtra);
+      expect(await stringPipe(pages, context)).to.deep.equal(extra);
     });
   });
 });
