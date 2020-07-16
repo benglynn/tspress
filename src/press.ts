@@ -3,23 +3,26 @@ import { join } from "path";
 import Page from "./types/page";
 import PageReducer from "./types/page-reducer";
 
-async function press<TContext>(
+async function press<TItem, TContext>(
   directory: string,
   seed: TContext,
-  reducers: { [K in keyof TContext]: PageReducer<TContext[K]> },
+  reducers: { [K in keyof TContext]: PageReducer<TItem, TContext[K]> },
   name = "",
   path = "/",
-  pages: Page[] = []
-): Promise<[Page[], TContext]> {
+  items: TItem[] = []
+): Promise<[TItem[], TContext]> {
   const md = file(join(directory, "index.md"));
-  const page = { name, path, md };
-  const nextPages = pages.concat(page);
+  const page: Page = { name, path, md }; // TODO: `md` as `content` the `Page` as `File`
+  // TODO: pipeline....
+  const item = (page as unknown) as TItem; // !!!!
+  // End
+  const nextItems = items.concat(item);
   const nextContext = <TContext>(
     Object.fromEntries(
       await Promise.all(
-        Object.entries<PageReducer<any>>(reducers).map(
+        Object.entries<PageReducer<TItem, any>>(reducers).map(
           async ([key, pageReducer]) =>
-            <[string, any]>[key, await pageReducer(page, (<any>seed)[key])]
+            <[string, any]>[key, await pageReducer(item, (<any>seed)[key])]
         )
       )
     )
@@ -34,7 +37,7 @@ async function press<TContext>(
       `${path}${dir.name}/`,
       pages
     );
-  }, Promise.resolve(<[Page[], TContext]>[nextPages, nextContext]));
+  }, Promise.resolve(<[TItem[], TContext]>[nextItems, nextContext]));
 }
 
 export default press;

@@ -1,7 +1,7 @@
 import Page from "./page";
 
-interface PageReducer<T> {
-  (page: Page, previous: T): T | Promise<T>;
+interface PageReducer<TItem, TSlice> {
+  (page: TItem, previous: TSlice): TSlice | Promise<TSlice>;
 }
 
 export default PageReducer;
