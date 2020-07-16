@@ -1,7 +1,7 @@
 import Pipeable from "./types/pipeable";
 import Pipe from "./types/pipe";
 
-const makePipe = <TStart, TEnd, TContext>(): Pipe<TStart, TEnd, TContext> => (
+const makePipe = <TStart, TContext>(): Pipe<TStart, TContext> => (
   ...pipeables: Array<Pipeable<any, any>>
 ) => (start: TStart, context: TContext) =>
   pipeables.reduce<any>(async (previous, pipe) => {
