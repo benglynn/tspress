@@ -1,7 +1,7 @@
 import "mocha";
 import { expect } from "chai";
 import { join } from "path";
-import { press, asPipe } from "../src/api";
+import { press, loadPipe } from "../src/api";
 import Page from "../src/types/page";
 import pressed from "./expected/pressed";
 import P from "../src/types/context-pipeable";
@@ -61,9 +61,9 @@ describe("press", () => {
     });
   });
 
-  describe("asPipe", () => {
+  describe("loadPipe", () => {
     it("returns a function", async () => {
-      expect(asPipe([], {})).to.be.a("function");
+      expect(loadPipe([], {})).to.be.a("function");
     });
   });
 
@@ -78,7 +78,7 @@ describe("press", () => {
       }
       const { items, seed, reducers, fixturePath } = setup();
       const [pages, context] = await press(fixturePath, items, seed, reducers);
-      const pipe = asPipe(pages, context);
+      const loadedPipe = loadPipe(pages, context);
 
       const upper: P<Context, Page[], Page[]> = (pages) =>
         pages.map((page) => ({ ...page, name: page.name.toUpperCase() }));
@@ -99,20 +99,22 @@ describe("press", () => {
       const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
       const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
 
-      expect((await pipe(upper)()).map((page) => page.name)).to.deep.equal(
-        upNames
-      );
+      expect(
+        (await loadedPipe(upper)()).map((page) => page.name)
+      ).to.deep.equal(upNames);
 
       expect(
-        (await pipe(upper, starDashes)()).map((page) => page.name)
+        (await loadedPipe(upper, starDashes)()).map((page) => page.name)
       ).to.deep.equal(starNames);
 
       expect(
-        (await pipe(upper, starDashes, addContext)()).map((pg) => pg.extra)
+        (await loadedPipe(upper, starDashes, addContext)()).map(
+          (pg) => pg.extra
+        )
       ).to.deep.equal(extra);
 
       expect(
-        await pipe(upper, starDashes, addContext, justExtra)()
+        await loadedPipe(upper, starDashes, addContext, justExtra)()
       ).to.deep.equal(extra);
     });
 
@@ -122,7 +124,7 @@ describe("press", () => {
       }
       const { items, seed, reducers, fixturePath } = setup();
       const [pages, context] = await press(fixturePath, items, seed, reducers);
-      const pipe = asPipe(pages, context);
+      const pipe = loadPipe(pages, context);
 
       const upper: P<Context, Page[], Promise<Page[]>> = (pages) =>
         Promise.resolve(
@@ -150,7 +152,8 @@ describe("press", () => {
       const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
       const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
 
-      expect((await pipe(upper)()).map((page) => page.name)).to.deep.equal(
+      const upperPipe = pipe(upper);
+      expect((await upperPipe()).map((page) => page.name)).to.deep.equal(
         upNames
       );
 
@@ -162,9 +165,8 @@ describe("press", () => {
         (await pipe(upper, starDashes, addContext)()).map((pg) => pg.extra)
       ).to.deep.equal(extra);
 
-      expect(
-        await pipe(upper, starDashes, addContext, justExtra)()
-      ).to.deep.equal(extra);
+      const longerPipe = pipe(upper, starDashes, addContext, justExtra);
+      expect(await longerPipe()).to.deep.equal(extra);
     });
   });
 });
