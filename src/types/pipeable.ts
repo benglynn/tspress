@@ -1,5 +1,5 @@
-interface Pipeable<I, O> {
-  (input: I, ...rest: any): O | Promise<O>;
+interface Pipeable<I, O, C> {
+  (input: I, context: C): O | Promise<O>;
 }
 
 export default Pipeable;
