@@ -25,9 +25,11 @@
   "homepage": "https://github.com/benglynn/tspress#readme",
   "devDependencies": {
     "@types/chai": "^4.2.11",
+    "@types/js-yaml": "^3.12.5",
     "@types/mocha": "^7.0.2",
     "@types/node": "^14.0.21",
     "chai": "^4.2.0",
+    "js-yaml": "^3.14.0",
     "mocha": "^8.0.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.6"
