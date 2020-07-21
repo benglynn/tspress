@@ -6,10 +6,10 @@ import ItemReducer from "./types/item-reducer";
 
 async function press<TItem, TContext>(
   directory: string,
-  items: TItem[] = [],
   toItem: Pipeable<Page, TItem, null>,
   seed: TContext,
   reducers: { [K in keyof TContext]: ItemReducer<TItem, TContext[K]> },
+  items: TItem[] = [],
   name = "",
   path = "/"
 ): Promise<[TItem[], TContext]> {
@@ -32,10 +32,10 @@ async function press<TItem, TContext>(
     const [items, context] = await previous;
     return press(
       join(directory, dir.name),
-      items,
       toItem,
       context,
       reducers,
+      items,
       dir.name,
       `${path}${dir.name}/`
     );
