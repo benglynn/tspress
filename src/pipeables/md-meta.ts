@@ -1,9 +1,6 @@
 import Page from "../types/page";
 import { load } from "js-yaml";
-
-interface HasMdMeta {
-  mdMeta: any;
-}
+import HasMdMeta from "../types/has-md-meta";
 
 const mdMeta = (page: Page): Page & HasMdMeta => {
   const match = page.md.match(/^---\n([\s\S]*)\n---/);

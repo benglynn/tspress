@@ -9,7 +9,7 @@ describe("press", () => {
     extra: string;
   }
 
-  const expectPressed = [
+  const expected = [
     {
       name: "",
       path: "/",
@@ -44,13 +44,13 @@ describe("press", () => {
   it("should parse each directory", async () => {
     const { toItem, fixturePath } = setup();
     const [pages] = await press(fixturePath, toItem, {}, {});
-    expect(pages).to.deep.equal(expectPressed);
+    expect(pages).to.deep.equal(expected);
   });
 
   it("should fold context with reducers", async () => {
     const { toItem, seed, reducers, fixturePath } = setup();
     const [pages, context] = await press(fixturePath, toItem, seed, reducers);
-    expect(pages).to.deep.equal(expectPressed);
+    expect(pages).to.deep.equal(expected);
     expect(context).to.deep.equal({
       names: ["", "french-press", "tea-pot"],
       pageCount: 3,
@@ -66,7 +66,7 @@ describe("press", () => {
         Promise.resolve(previous + 1),
     };
     const [pages, context] = await press(fixturePath, toItem, seed, reducers);
-    expect(pages).to.deep.equal(expectPressed);
+    expect(pages).to.deep.equal(expected);
     expect(context).to.deep.equal({
       names: ["", "french-press", "tea-pot"],
       pageCount: 3,
