@@ -13,7 +13,8 @@ describe("press", () => {
     {
       name: "",
       path: "/",
-      md: "---\ntemplate: 'home.pug'\n---\n\n# Beverage vessels\n\nWelcome!",
+      md:
+        "---\ntemplate: 'home.pug'\ntags:\n - global\n---\n\n# Beverage vessels\n\nWelcome!",
     },
     {
       name: "french-press",

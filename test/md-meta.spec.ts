@@ -9,8 +9,9 @@ describe("mdMeta", () => {
     {
       name: "",
       path: "/",
-      md: "---\ntemplate: 'home.pug'\n---\n\n# Beverage vessels\n\nWelcome!",
-      mdMeta: { template: "home.pug" },
+      md:
+        "---\ntemplate: 'home.pug'\ntags:\n - global\n---\n\n# Beverage vessels\n\nWelcome!",
+      mdMeta: { template: "home.pug", tags: ["global"] },
     },
     {
       name: "french-press",
