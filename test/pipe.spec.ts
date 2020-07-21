@@ -13,7 +13,6 @@ describe("pipe", () => {
     extra: string;
   }
   const setup = () => {
-    const items: Page[] = [];
     const toItem = (page: Page) => page;
     const seed = { names: <string[]>[], pageCount: 0 };
     const reducers = {
@@ -21,7 +20,7 @@ describe("pipe", () => {
       pageCount: (page: Page, previous: number) => previous + 1,
     };
     const fixturePath = join(__dirname, "fixture");
-    return { items, toItem, seed, reducers, fixturePath };
+    return { toItem, seed, reducers, fixturePath };
   };
 
   it("passes pages through any number of pipeables", async () => {
@@ -29,14 +28,8 @@ describe("pipe", () => {
       names: Array<string>;
       pageCount: number;
     }
-    const { items, toItem, seed, reducers, fixturePath } = setup();
-    const [pages, context] = await press(
-      fixturePath,
-      items,
-      toItem,
-      seed,
-      reducers
-    );
+    const { toItem, seed, reducers, fixturePath } = setup();
+    const [pages, context] = await press(fixturePath, toItem, seed, reducers);
 
     const pipe = makePipe<Page[], Context>();
 
@@ -83,14 +76,8 @@ describe("pipe", () => {
     interface PageExtra extends Page {
       extra: string;
     }
-    const { items, toItem, seed, reducers, fixturePath } = setup();
-    const [pages, context] = await press(
-      fixturePath,
-      items,
-      toItem,
-      seed,
-      reducers
-    );
+    const { toItem, seed, reducers, fixturePath } = setup();
+    const [pages, context] = await press(fixturePath, toItem, seed, reducers);
 
     const pipe = makePipe<Page[], Context>();
 
