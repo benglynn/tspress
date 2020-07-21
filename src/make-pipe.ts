@@ -8,4 +8,5 @@ const makePipe = <TStart, TContext>(): Pipe<TStart, TContext> => (
     const piped = pipe(await previous, context);
     return (piped instanceof Promise && piped) || Promise.resolve(piped);
   }, start);
+
 export default makePipe;
