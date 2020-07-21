@@ -7,7 +7,7 @@ import ItemReducer from "./types/item-reducer";
 async function press<TItem, TContext>(
   directory: string,
   items: TItem[] = [],
-  toItem: Pipeable<Page, TItem>,
+  toItem: Pipeable<Page, TItem, null>,
   seed: TContext,
   reducers: { [K in keyof TContext]: ItemReducer<TItem, TContext[K]> },
   name = "",
@@ -16,7 +16,7 @@ async function press<TItem, TContext>(
   const md = file(join(directory, "index.md"));
   // TODO: `md` as `content` then `Page` as `File`
   const page: Page = { name, path, md };
-  const item = await toItem(page);
+  const item = await toItem(page, null);
   const nextItems = items.concat(item);
   const nextContext = <TContext>(
     Object.fromEntries(
