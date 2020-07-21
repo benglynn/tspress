@@ -3,12 +3,31 @@ import { expect } from "chai";
 import { join } from "path";
 import { press, makePipe } from "../src/api";
 import Page from "../src/types/page";
-import pressed from "./expected/pressed";
 
 describe("press", () => {
   interface PageExtra extends Page {
     extra: string;
   }
+
+  const expectPressed = [
+    {
+      name: "",
+      path: "/",
+      md: "---\ntemplate: 'home.pug'\n---\n\n# Beverage vessels\n\nWelcome!",
+    },
+    {
+      name: "french-press",
+      path: "/french-press/",
+      md:
+        "---\nheadline: French press\ntags:\n - vessel\n---\n\n# French press\n\nThe French press is also known as a cafetière.",
+    },
+    {
+      name: "tea-pot",
+      path: "/tea-pot/",
+      md:
+        "---\nheadline: Tea pot\ntags:\n - vessel\n---\n\n# Tea pot\n\nA teapot is a vessel used for steeping tea leaves.",
+    },
+  ];
 
   const setup = () => {
     const toItem = (page: Page) => page;
@@ -24,13 +43,13 @@ describe("press", () => {
   it("should parse each directory", async () => {
     const { toItem, fixturePath } = setup();
     const [pages] = await press(fixturePath, toItem, {}, {});
-    expect(pages).to.deep.equal(pressed);
+    expect(pages).to.deep.equal(expectPressed);
   });
 
   it("should fold context with reducers", async () => {
     const { toItem, seed, reducers, fixturePath } = setup();
     const [pages, context] = await press(fixturePath, toItem, seed, reducers);
-    expect(pages).to.deep.equal(pressed);
+    expect(pages).to.deep.equal(expectPressed);
     expect(context).to.deep.equal({
       names: ["", "french-press", "tea-pot"],
       pageCount: 3,
@@ -46,7 +65,7 @@ describe("press", () => {
         Promise.resolve(previous + 1),
     };
     const [pages, context] = await press(fixturePath, toItem, seed, reducers);
-    expect(pages).to.deep.equal(pressed);
+    expect(pages).to.deep.equal(expectPressed);
     expect(context).to.deep.equal({
       names: ["", "french-press", "tea-pot"],
       pageCount: 3,
