@@ -4,6 +4,11 @@ type Pi<I, O, C> = Pipeable<I, O, C>;
 type R<T> = T | Promise<T>;
 type Pr<T> = Promise<T>;
 
+/**
+ * Overloads ensure that pipeables in a Pipe each works on the output of the
+ * last. Pipes are used in press to pipe Directories into Items, and in
+ * compilation to pipe Items into HTML.
+ */
 // prettier-ignore
 interface Pipe<TStart, TContext> {
   <A>(p1: Pi<TStart, R<A>, TContext>): (start: TStart, context: TContext) => Pr<A>;

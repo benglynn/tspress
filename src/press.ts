@@ -6,7 +6,7 @@ import ItemReducer from "./types/item-reducer";
 
 async function press<TItem, TContext>(
   directory: string,
-  toItem: Pipeable<Directory, TItem, null>,
+  toItem: Pipeable<Directory, TItem>,
   seed: TContext,
   reducers: { [K in keyof TContext]: ItemReducer<TItem, TContext[K]> },
   items: TItem[] = [],

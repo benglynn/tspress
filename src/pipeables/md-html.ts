@@ -1,19 +1,18 @@
-import Directory from "../types/directory";
+import Item from "../types/item";
 import showdown from "showdown";
-import { PageMeta } from "./md-meta";
-
-interface PageHtml extends PageMeta {
-  mdHtml: string;
-}
 
 showdown.setFlavor("github");
+
 const converter = new showdown.Converter({
   noHeaderId: true,
   simpleLineBreaks: false,
   metadata: true,
 });
 
-const mdHtml = (item: PageMeta): PageHtml => {
+/**
+ * Create HTML from a directory's markdown.
+ */
+const mdHtml = (item: Item): Item => {
   return { ...item, mdHtml: converter.makeHtml(item.md) };
 };
 

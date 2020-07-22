@@ -1,13 +1,14 @@
-import Directory from "../types/directory";
-import HasMdMeta from "../types/has-md-meta";
+import Item from "../types/item";
 
-type TItem = Directory & HasMdMeta;
-
-type Tags = { [key: string]: Array<TItem> };
+type Tags = { [key: string]: ReadonlyArray<Item> };
 
 export const seed = <Tags>{};
 
-export const reducer = (item: TItem, previous: Tags) =>
+/**
+ * Reduce an object of tags discovered in a Item's metadata, where tags become
+ * keys who's values are an array of Items.
+ */
+export const reducer = (item: Item, previous: Tags) =>
   ((Array.isArray(item.mdMeta.tags) && item.mdMeta.tags) || [])
     .filter((item): item is string => typeof item === "string")
     .reduce(

@@ -2,7 +2,9 @@ import "mocha";
 import { expect } from "chai";
 import { join } from "path";
 import { press, makePipe } from "../src/api";
+import { compile } from "../src/pipe";
 import Directory from "../src/types/directory";
+import Item from "../src/types/item";
 
 describe("pipe", () => {
   interface Context {
@@ -23,7 +25,7 @@ describe("pipe", () => {
     return { toItem, seed, reducers, fixturePath };
   };
 
-  it("passes directories through any number of pipeables", async () => {
+  it("passes data through any number of pipeables", async () => {
     interface Context {
       names: Array<string>;
       pageCount: number;
