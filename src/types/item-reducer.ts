@@ -1,7 +1,7 @@
-import Page from "./page";
+import Directory from "./directory";
 
 interface ItemReducer<TItem, TSlice> {
-  (page: TItem, previous: TSlice): TSlice | Promise<TSlice>;
+  (item: TItem, previous: TSlice): TSlice | Promise<TSlice>;
 }
 
 export default ItemReducer;

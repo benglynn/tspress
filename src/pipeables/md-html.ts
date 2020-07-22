@@ -1,4 +1,4 @@
-import Page from "../types/page";
+import Directory from "../types/directory";
 import showdown from "showdown";
 import { PageMeta } from "./md-meta";
 

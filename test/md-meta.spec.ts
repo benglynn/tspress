@@ -28,7 +28,7 @@ describe("mdMeta", () => {
       mdMeta: { headline: "Tea pot", tags: ["vessel"] },
     },
   ];
-  it("should add markdown meta to each page", async () => {
+  it("should add markdown meta to each file", async () => {
     const [items] = await press(join(__dirname, "fixture"), mdMeta, {}, {});
     expect(items).to.deep.equal(expected);
   });

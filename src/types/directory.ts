@@ -1,7 +1,7 @@
-interface Page {
+interface Directory {
   name: string;
   path: string;
   md: string;
 }
 
-export default Page;
+export default Directory;

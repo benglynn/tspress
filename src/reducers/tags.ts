@@ -1,7 +1,7 @@
-import Page from "../types/page";
+import Directory from "../types/directory";
 import HasMdMeta from "../types/has-md-meta";
 
-type TItem = Page & HasMdMeta;
+type TItem = Directory & HasMdMeta;
 
 type Tags = { [key: string]: Array<TItem> };
 

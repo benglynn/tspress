@@ -1,11 +1,11 @@
-import Page from "../types/page";
+import Directory from "../types/directory";
 import { load } from "js-yaml";
 import HasMdMeta from "../types/has-md-meta";
 
-const mdMeta = (page: Page): Page & HasMdMeta => {
-  const match = page.md.match(/^---\n([\s\S]*)\n---/);
+const mdMeta = (dir: Directory): Directory & HasMdMeta => {
+  const match = dir.md.match(/^---\n([\s\S]*)\n---/);
   const mdMeta = match === null ? {} : load(match[1]);
-  return { ...page, mdMeta };
+  return { ...dir, mdMeta };
 };
 
 export default mdMeta;

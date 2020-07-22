@@ -35,7 +35,7 @@ describe("tags", () => {
       ],
     },
   };
-  it("should find tags on each page", async () => {
+  it("should find tags on each dir", async () => {
     const seed = { tags: tagsSeed };
     const reducers = { tags: tagsReducer };
     const fixturePath = join(__dirname, "fixture");
