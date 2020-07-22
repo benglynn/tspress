@@ -2,114 +2,116 @@ import "mocha";
 import { expect } from "chai";
 import { join } from "path";
 import { press, makePipe } from "../src/api";
-import Page from "../src/types/page";
+import { compile } from "../src/pipe";
+import Directory from "../src/types/directory";
+import Item from "../src/types/item";
 
 describe("pipe", () => {
   interface Context {
     names: Array<string>;
     pageCount: number;
   }
-  interface PageExtra extends Page {
+  interface DirExtra extends Directory {
     extra: string;
   }
   const setup = () => {
-    const toItem = (page: Page) => page;
+    const toItem = (dir: Directory) => dir;
     const seed = { names: <string[]>[], pageCount: 0 };
     const reducers = {
-      names: (page: Page, previous: string[]) => previous.concat(page.name),
-      pageCount: (page: Page, previous: number) => previous + 1,
+      names: (dir: Directory, previous: string[]) => previous.concat(dir.name),
+      pageCount: (dir: Directory, previous: number) => previous + 1,
     };
     const fixturePath = join(__dirname, "fixture");
     return { toItem, seed, reducers, fixturePath };
   };
 
-  it("passes pages through any number of pipeables", async () => {
+  it("passes data through any number of pipeables", async () => {
     interface Context {
       names: Array<string>;
       pageCount: number;
     }
     const { toItem, seed, reducers, fixturePath } = setup();
-    const [pages, context] = await press(fixturePath, toItem, seed, reducers);
+    const [items, context] = await press(fixturePath, toItem, seed, reducers);
 
-    const pipe = makePipe<Page[], Context>();
+    const pipe = makePipe<Directory[], Context>();
 
-    const upper = (pages: Page[]): Page[] =>
-      pages.map((page) => ({ ...page, name: page.name.toUpperCase() }));
+    const upper = (dirs: Directory[]): Directory[] =>
+      dirs.map((dir) => ({ ...dir, name: dir.name.toUpperCase() }));
 
     const upNames = ["", "FRENCH-PRESS", "TEA-POT"];
 
     expect(
-      (await pipe(upper)(pages, context)).map((page) => page.name)
+      (await pipe(upper)(items, context)).map((dir) => dir.name)
     ).to.deep.equal(upNames);
 
-    const starDashes = (pages: Page[]): Page[] =>
-      pages.map((page) => ({ ...page, name: page.name.replace(/-/g, "*") }));
+    const starDashes = (dirs: Directory[]): Directory[] =>
+      dirs.map((dir) => ({ ...dir, name: dir.name.replace(/-/g, "*") }));
 
     const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
 
     expect(
-      (await pipe(upper, starDashes)(pages, context)).map((page) => page.name)
+      (await pipe(upper, starDashes)(items, context)).map((dir) => dir.name)
     ).to.deep.equal(starNames);
 
-    const addContext = (pages: Page[], context: Context) =>
-      pages.map((page, index) => ({
-        ...page,
+    const addContext = (dirs: Directory[], context: Context) =>
+      dirs.map((dir, index) => ({
+        ...dir,
         extra: `Page ${index + 1} of ${context.pageCount}`,
       }));
 
     const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
 
     expect(
-      (await pipe(upper, starDashes, addContext)(pages, context)).map(
-        (pg) => pg.extra
+      (await pipe(upper, starDashes, addContext)(items, context)).map(
+        (dir) => dir.extra
       )
     ).to.deep.equal(extra);
 
-    const justExtra = (pages: PageExtra[]) => pages.map((page) => page.extra);
+    const justExtra = (dirs: DirExtra[]) => dirs.map((dir) => dir.extra);
 
     expect(
-      await pipe(upper, starDashes, addContext, justExtra)(pages, context)
+      await pipe(upper, starDashes, addContext, justExtra)(items, context)
     ).to.deep.equal(extra);
   });
 
   it("awaits promises returned by pipeables", async () => {
-    interface PageExtra extends Page {
+    interface DirExtra extends Directory {
       extra: string;
     }
     const { toItem, seed, reducers, fixturePath } = setup();
-    const [pages, context] = await press(fixturePath, toItem, seed, reducers);
+    const [dirs, context] = await press(fixturePath, toItem, seed, reducers);
 
-    const pipe = makePipe<Page[], Context>();
+    const pipe = makePipe<Directory[], Context>();
 
-    const upper = (pages: Page[]): Promise<Page[]> =>
+    const upper = (dirs: Directory[]): Promise<Directory[]> =>
       Promise.resolve(
-        pages.map((page) => ({ ...page, name: page.name.toUpperCase() }))
+        dirs.map((dir) => ({ ...dir, name: dir.name.toUpperCase() }))
       );
 
-    const starDashes = (pages: Page[]): Page[] =>
-      pages.map((page) => ({ ...page, name: page.name.replace(/-/g, "*") }));
+    const starDashes = (dirs: Directory[]): Directory[] =>
+      dirs.map((dir) => ({ ...dir, name: dir.name.replace(/-/g, "*") }));
 
     const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
 
     expect(
-      (await pipe(upper, starDashes)(pages, context)).map((page) => page.name)
+      (await pipe(upper, starDashes)(dirs, context)).map((dir) => dir.name)
     ).to.deep.equal(starNames);
 
-    const addContext = (pages: Page[], context: Context) =>
+    const addContext = (dirs: Directory[], context: Context) =>
       Promise.resolve(
-        pages.map((page, index) => ({
-          ...page,
+        dirs.map((dir, index) => ({
+          ...dir,
           extra: `Page ${index + 1} of ${context.pageCount}`,
         }))
       );
 
-    const justExtra = (pages: PageExtra[]): string[] =>
-      pages.map((page) => page.extra);
+    const justExtra = (dirs: DirExtra[]): string[] =>
+      dirs.map((dir) => dir.extra);
 
     const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
 
     expect(
-      (await pipe(upper, starDashes, addContext)(pages, context)).map(
+      (await pipe(upper, starDashes, addContext)(dirs, context)).map(
         (pg) => pg.extra
       )
     ).to.deep.equal(extra);
@@ -119,7 +121,7 @@ describe("pipe", () => {
       starDashes,
       addContext,
       justExtra
-    )(pages, context);
+    )(dirs, context);
     expect(result).to.deep.equal(extra);
   });
 });

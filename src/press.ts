@@ -1,12 +1,12 @@
 import { file, directories } from "./util";
 import { join } from "path";
-import Page from "./types/page";
+import Directory from "./types/directory";
 import Pipeable from "./types/pipeable";
 import ItemReducer from "./types/item-reducer";
 
 async function press<TItem, TContext>(
   directory: string,
-  toItem: Pipeable<Page, TItem, null>,
+  toItem: Pipeable<Directory, TItem>,
   seed: TContext,
   reducers: { [K in keyof TContext]: ItemReducer<TItem, TContext[K]> },
   items: TItem[] = [],
@@ -14,9 +14,8 @@ async function press<TItem, TContext>(
   path = "/"
 ): Promise<[TItem[], TContext]> {
   const md = file(join(directory, "index.md"));
-  // TODO: `md` as `content` then `Page` as `File`
-  const page: Page = { name, path, md };
-  const item = await toItem(page, null);
+  const dir: Directory = { name, path, md };
+  const item = await toItem(dir, null);
   const nextItems = items.concat(item);
   const nextContext = <TContext>(
     Object.fromEntries(
