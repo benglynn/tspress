@@ -2,10 +2,10 @@ import "mocha";
 import { expect } from "chai";
 import { join } from "path";
 import { press, makePipe } from "../src/api";
-import Page from "../src/types/page";
+import Dir from "../src/types/directory";
 
 describe("press", () => {
-  interface PageExtra extends Page {
+  interface DirExtra extends Dir {
     extra: string;
   }
 
@@ -31,11 +31,11 @@ describe("press", () => {
   ];
 
   const setup = () => {
-    const toItem = (page: Page) => page;
+    const toItem = (dir: Dir) => dir;
     const seed = { names: <string[]>[], pageCount: 0 };
     const reducers = {
-      names: (page: Page, previous: string[]) => previous.concat(page.name),
-      pageCount: (page: Page, previous: number) => previous + 1,
+      names: (dir: Dir, previous: string[]) => previous.concat(dir.name),
+      pageCount: (dir: Dir, previous: number) => previous + 1,
     };
     const fixturePath = join(__dirname, "fixture");
     return { toItem, seed, reducers, fixturePath };
@@ -43,14 +43,14 @@ describe("press", () => {
 
   it("should parse each directory", async () => {
     const { toItem, fixturePath } = setup();
-    const [pages] = await press(fixturePath, toItem, {}, {});
-    expect(pages).to.deep.equal(expected);
+    const [items] = await press(fixturePath, toItem, {}, {});
+    expect(items).to.deep.equal(expected);
   });
 
   it("should fold context with reducers", async () => {
     const { toItem, seed, reducers, fixturePath } = setup();
-    const [pages, context] = await press(fixturePath, toItem, seed, reducers);
-    expect(pages).to.deep.equal(expected);
+    const [items, context] = await press(fixturePath, toItem, seed, reducers);
+    expect(items).to.deep.equal(expected);
     expect(context).to.deep.equal({
       names: ["", "french-press", "tea-pot"],
       pageCount: 3,
@@ -60,43 +60,42 @@ describe("press", () => {
   it("should fold context with async reducers", async () => {
     const { toItem, seed, fixturePath } = setup();
     const reducers = {
-      names: (page: Page, previous: string[]) =>
-        Promise.resolve(previous.concat(page.name)),
-      pageCount: (page: Page, previous: number) =>
-        Promise.resolve(previous + 1),
+      names: (dir: Dir, previous: string[]) =>
+        Promise.resolve(previous.concat(dir.name)),
+      pageCount: (dir: Dir, previous: number) => Promise.resolve(previous + 1),
     };
-    const [pages, context] = await press(fixturePath, toItem, seed, reducers);
-    expect(pages).to.deep.equal(expected);
+    const [dirs, context] = await press(fixturePath, toItem, seed, reducers);
+    expect(dirs).to.deep.equal(expected);
     expect(context).to.deep.equal({
       names: ["", "french-press", "tea-pot"],
       pageCount: 3,
     });
   });
 
-  it("transforms each page", async () => {
+  it("transforms each dir", async () => {
     const { fixturePath } = setup();
-    const toItem = (page: Page): PageExtra => ({ ...page, extra: "sauce" });
-    const [pages] = await press(fixturePath, toItem, {}, {});
+    const toItem = (dir: Dir): DirExtra => ({ ...dir, extra: "sauce" });
+    const [items] = await press(fixturePath, toItem, {}, {});
     const expected = ["sauce", "sauce", "sauce"];
-    expect(pages.map((page) => page.extra)).to.deep.equal(expected);
+    expect(items.map((item) => item.extra)).to.deep.equal(expected);
   });
 
-  it("transforms pages with a pipe", async () => {
+  it("transforms items with a pipe", async () => {
     const { fixturePath } = setup();
-    const pipeable = (page: Page): PageExtra => ({ ...page, extra: "pipe" });
-    const pipe = makePipe<Page, null>()(pipeable);
-    const [pages] = await press(fixturePath, pipe, {}, {});
+    const pipeable = (dir: Dir): DirExtra => ({ ...dir, extra: "pipe" });
+    const pipe = makePipe<Dir, null>()(pipeable);
+    const [dirs] = await press(fixturePath, pipe, {}, {});
     const expected = ["pipe", "pipe", "pipe"];
-    expect(pages.map((page) => page.extra)).to.deep.equal(expected);
+    expect(dirs.map((dir) => dir.extra)).to.deep.equal(expected);
   });
 
-  it("transforms pages with an async pipe", async () => {
+  it("transforms dirs with an async pipe", async () => {
     const { fixturePath } = setup();
-    const pipeable = (page: Page): Promise<PageExtra> =>
-      Promise.resolve({ ...page, extra: "async pipe" });
-    const pipe = makePipe<Page, null>()(pipeable);
-    const [pages] = await press(fixturePath, pipe, {}, {});
+    const pipeable = (dir: Dir): Promise<DirExtra> =>
+      Promise.resolve({ ...dir, extra: "async pipe" });
+    const pipe = makePipe<Dir, null>()(pipeable);
+    const [dirs] = await press(fixturePath, pipe, {}, {});
     const expected = ["async pipe", "async pipe", "async pipe"];
-    expect(pages.map((page) => page.extra)).to.deep.equal(expected);
+    expect(dirs.map((dir) => dir.extra)).to.deep.equal(expected);
   });
 });
