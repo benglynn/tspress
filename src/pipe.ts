@@ -13,7 +13,5 @@ const makePipe = <TStart, TContext = null>(): Pipe<TStart, TContext> => (
 
 export default makePipe;
 
-export const dirPipe = makePipe<Directory>();
-
 export const compile = <TContext>(context: TContext) =>
   makePipe<Item, TContext>();

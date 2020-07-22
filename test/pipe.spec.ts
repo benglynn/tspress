@@ -2,9 +2,7 @@ import "mocha";
 import { expect } from "chai";
 import { join } from "path";
 import { press, makePipe } from "../src/api";
-import { compile } from "../src/pipe";
 import Directory from "../src/types/directory";
-import Item from "../src/types/item";
 
 describe("pipe", () => {
   interface Context {
