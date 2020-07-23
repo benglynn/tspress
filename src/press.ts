@@ -1,7 +1,6 @@
 import { file, directories } from "./util";
 import { join } from "path";
 import Directory from "./types/directory";
-import Pipeable from "./types/pipeable";
 import ItemReducer from "./types/item-reducer";
 
 async function press<TItem, TContext>(

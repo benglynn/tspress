@@ -1,6 +1,6 @@
-import pipe from "./pipe2";
+import pipe from "./pipe";
 import Directory from "./types/directory";
-import Pipeable from "./types/pipeable2";
+import Pipeable from "./types/pipeable";
 
 const directoryPipe = <TInOut>(
   toPipeInput: (dir: Directory) => TInOut | Promise<TInOut>,

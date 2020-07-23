@@ -1,8 +1,8 @@
 import "mocha";
 import { expect } from "chai";
-import pipe from "../src/pipe2";
+import pipe from "../src/pipe";
 
-describe("pipe2", () => {
+describe("pipe", () => {
   it("pipes data through pipeables", async () => {
     const p1 = (str: string) => str + "-1";
     const p2 = (str: string) => str + "-2";
