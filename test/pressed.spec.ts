@@ -2,7 +2,7 @@ import "mocha";
 import { expect } from "chai";
 import { join } from "path";
 import { press } from "../src/api";
-import pipe from "../src/pipe2";
+import directoryPipe from "../src/directory-pipe";
 import Directory from "../src/types/directory";
 import { expectedDirs } from "./expected";
 
@@ -56,7 +56,7 @@ describe("press", () => {
       ...dir,
       name: "pipe",
     });
-    const [dirs] = await press(fixturePath, pipe(changeName), {}, {});
+    const [dirs] = await press(fixturePath, directoryPipe(changeName), {}, {});
     const expected = ["pipe", "pipe", "pipe"];
     expect(dirs.map((dir) => dir.name)).to.deep.equal(expected);
   });
@@ -65,7 +65,7 @@ describe("press", () => {
     const { fixturePath } = setup();
     const changeName = (dir: Directory): Promise<Directory> =>
       Promise.resolve({ ...dir, name: "async pipe" });
-    const [dirs] = await press(fixturePath, pipe(changeName), {}, {});
+    const [dirs] = await press(fixturePath, directoryPipe(changeName), {}, {});
     const expected = ["async pipe", "async pipe", "async pipe"];
     expect(dirs.map((dir) => dir.name)).to.deep.equal(expected);
   });
