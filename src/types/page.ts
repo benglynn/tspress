@@ -1,12 +1,16 @@
 import Directory from "./directory";
 
 /**
- * Extra properties added to a directory in a pipeline before it is reduced.
- * Each pipeable expects a Page type.
+ * Representation of a page of the site.
+ *
+ * Page is derived from a directory, is the input and output type of each
+ * pipeable in the page pipe, is the type passed to each reducer, and is the
+ * input and output type of each pipeable in the compile pipe.
  */
 interface Page extends Directory {
   readonly mdMeta: { [key: string]: any };
   readonly mdHtml: string;
+  dependencies: ReadonlyArray<string>;
 }
 
 export default Page;
