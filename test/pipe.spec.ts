@@ -1,127 +1,34 @@
 import "mocha";
 import { expect } from "chai";
-import { join } from "path";
-import { press, makePipe } from "../src/api";
-import { compile } from "../src/pipe";
-import Directory from "../src/types/directory";
-import Item from "../src/types/item";
+import pipe from "../src/pipe";
 
 describe("pipe", () => {
-  interface Context {
-    names: Array<string>;
-    pageCount: number;
-  }
-  interface DirExtra extends Directory {
-    extra: string;
-  }
-  const setup = () => {
-    const toItem = (dir: Directory) => dir;
-    const seed = { names: <string[]>[], pageCount: 0 };
-    const reducers = {
-      names: (dir: Directory, previous: string[]) => previous.concat(dir.name),
-      pageCount: (dir: Directory, previous: number) => previous + 1,
-    };
-    const fixturePath = join(__dirname, "fixture");
-    return { toItem, seed, reducers, fixturePath };
-  };
-
-  it("passes data through any number of pipeables", async () => {
-    interface Context {
-      names: Array<string>;
-      pageCount: number;
-    }
-    const { toItem, seed, reducers, fixturePath } = setup();
-    const [items, context] = await press(fixturePath, toItem, seed, reducers);
-
-    const pipe = makePipe<Directory[], Context>();
-
-    const upper = (dirs: Directory[]): Directory[] =>
-      dirs.map((dir) => ({ ...dir, name: dir.name.toUpperCase() }));
-
-    const upNames = ["", "FRENCH-PRESS", "TEA-POT"];
-
-    expect(
-      (await pipe(upper)(items, context)).map((dir) => dir.name)
-    ).to.deep.equal(upNames);
-
-    const starDashes = (dirs: Directory[]): Directory[] =>
-      dirs.map((dir) => ({ ...dir, name: dir.name.replace(/-/g, "*") }));
-
-    const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
-
-    expect(
-      (await pipe(upper, starDashes)(items, context)).map((dir) => dir.name)
-    ).to.deep.equal(starNames);
-
-    const addContext = (dirs: Directory[], context: Context) =>
-      dirs.map((dir, index) => ({
-        ...dir,
-        extra: `Page ${index + 1} of ${context.pageCount}`,
-      }));
-
-    const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
-
-    expect(
-      (await pipe(upper, starDashes, addContext)(items, context)).map(
-        (dir) => dir.extra
-      )
-    ).to.deep.equal(extra);
-
-    const justExtra = (dirs: DirExtra[]) => dirs.map((dir) => dir.extra);
-
-    expect(
-      await pipe(upper, starDashes, addContext, justExtra)(items, context)
-    ).to.deep.equal(extra);
+  it("pipes data through pipeables", async () => {
+    const p1 = (str: string) => str + "-1";
+    const p2 = (str: string) => str + "-2";
+    const p3 = (str: string) => str + "-3";
+    expect(await pipe(p1, p2, p3)("in", null)).to.equal("in-1-2-3");
   });
 
-  it("awaits promises returned by pipeables", async () => {
-    interface DirExtra extends Directory {
-      extra: string;
-    }
-    const { toItem, seed, reducers, fixturePath } = setup();
-    const [dirs, context] = await press(fixturePath, toItem, seed, reducers);
+  it("pipes data through async pipeables", async () => {
+    const p1 = (str: string) => Promise.resolve(str + "-a");
+    const p2 = (str: string) => Promise.resolve(str + "-b");
+    const p3 = (str: string) => Promise.resolve(str + "-c");
+    expect(await pipe(p1, p2, p3)("in", null)).to.equal("in-a-b-c");
+  });
 
-    const pipe = makePipe<Directory[], Context>();
+  it("pipes data through sync and async pipeables", async () => {
+    const p1 = (str: string) => Promise.resolve(str + "-async");
+    const p2 = (str: string) => str + "-sync";
+    const p3 = (str: string) => Promise.resolve(str + "-async");
+    expect(await pipe(p1, p2, p3)("in", null)).to.equal("in-async-sync-async");
+  });
 
-    const upper = (dirs: Directory[]): Promise<Directory[]> =>
-      Promise.resolve(
-        dirs.map((dir) => ({ ...dir, name: dir.name.toUpperCase() }))
-      );
-
-    const starDashes = (dirs: Directory[]): Directory[] =>
-      dirs.map((dir) => ({ ...dir, name: dir.name.replace(/-/g, "*") }));
-
-    const starNames = ["", "FRENCH*PRESS", "TEA*POT"];
-
-    expect(
-      (await pipe(upper, starDashes)(dirs, context)).map((dir) => dir.name)
-    ).to.deep.equal(starNames);
-
-    const addContext = (dirs: Directory[], context: Context) =>
-      Promise.resolve(
-        dirs.map((dir, index) => ({
-          ...dir,
-          extra: `Page ${index + 1} of ${context.pageCount}`,
-        }))
-      );
-
-    const justExtra = (dirs: DirExtra[]): string[] =>
-      dirs.map((dir) => dir.extra);
-
-    const extra = ["Page 1 of 3", "Page 2 of 3", "Page 3 of 3"];
-
-    expect(
-      (await pipe(upper, starDashes, addContext)(dirs, context)).map(
-        (pg) => pg.extra
-      )
-    ).to.deep.equal(extra);
-
-    const result = await pipe(
-      upper,
-      starDashes,
-      addContext,
-      justExtra
-    )(dirs, context);
-    expect(result).to.deep.equal(extra);
+  it("passes context to each pipeable", async () => {
+    type C = { 0: string; 1: string; 2: string };
+    const p1 = (str: string, ctx: C) => str + `-${ctx[0]}`;
+    const p2 = (str: string, ctx: C) => Promise.resolve(str + `-${ctx[1]}`);
+    const p3 = (str: string, ctx: C) => str + `-${ctx[2]}`;
+    expect(await pipe(p1, p2, p3)("in", ["x", "y", "z"])).to.equal("in-x-y-z");
   });
 });

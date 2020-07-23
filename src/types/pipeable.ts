@@ -1,8 +1,5 @@
-/**
- * A component of a Pipe used to transform the data that passes through.
- */
-interface Pipeable<TIn, TOut, TContext = null> {
-  (input: TIn, context: TContext): TOut | Promise<TOut>;
+interface Pipeable<TItem, TContext> {
+  (item: TItem, context: TContext): TItem | Promise<TItem>;
 }
 
 export default Pipeable;
