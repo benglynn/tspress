@@ -13,7 +13,8 @@ describe("integration", () => {
   it("should use all pipeables and reducers", async () => {
     const toPage_ = pagePipe(toPage, mdHtml, mdMeta);
     const [pages, context] = await press(
-      join(__dirname, "fixture"),
+      join(__dirname, "fixture/content"),
+      join(__dirname, "fixture/templates"),
       toPage_,
       { tags: tagsSeed },
       { tags: tagsReducer }
