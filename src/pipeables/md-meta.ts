@@ -1,13 +1,13 @@
-import Item from "../types/item";
+import Page from "../types/page";
 import { load } from "js-yaml";
 
 /**
- * Parse metadata in a Directory's markdown.
+ * Parse the metadata in a pages markdown.
  */
-const mdMeta = (item: Item): Item => {
-  const match = item.md.match(/^---\n([\s\S]*)\n---/);
+const mdMeta = (page: Page): Page => {
+  const match = page.md.match(/^---\n([\s\S]*)\n---/);
   const mdMeta = match === null ? {} : load(match[1]);
-  return { ...item, mdMeta };
+  return { ...page, mdMeta };
 };
 
 export default mdMeta;

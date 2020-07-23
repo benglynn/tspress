@@ -1,4 +1,4 @@
-import Item from "../types/item";
+import Page from "../types/page";
 import showdown from "showdown";
 
 showdown.setFlavor("github");
@@ -12,8 +12,8 @@ const converter = new showdown.Converter({
 /**
  * Create HTML from a directory's markdown.
  */
-const mdHtml = (item: Item): Item => {
-  return { ...item, mdHtml: converter.makeHtml(item.md) };
+const mdHtml = (page: Page): Page => {
+  return { ...page, mdHtml: converter.makeHtml(page.md) };
 };
 
 export default mdHtml;
