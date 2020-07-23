@@ -1,5 +1,5 @@
-interface Pipeable<TItem, TContext> {
-  (item: TItem, context: TContext): TItem | Promise<TItem>;
+interface Pipeable<TPage, TContext> {
+  (page: TPage, context: TContext): TPage | Promise<TPage>;
 }
 
 export default Pipeable;

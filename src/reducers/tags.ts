@@ -1,20 +1,20 @@
-import Item from "../types/item";
+import Page from "../types/page";
 
-type Tags = { [key: string]: ReadonlyArray<Item> };
+type Tags = { readonly [key: string]: ReadonlyArray<Page> };
 
 export const seed = <Tags>{};
 
 /**
- * Reduce an object of tags discovered in a Item's metadata, where tags become
- * keys who's values are an array of Items.
+ * Fold an object of tags discovered in a page's metadata, where tags become
+ * keys with values that are an array of pages.
  */
-export const reducer = (item: Item, previous: Tags) =>
-  ((Array.isArray(item.mdMeta.tags) && item.mdMeta.tags) || [])
-    .filter((item): item is string => typeof item === "string")
+export const reducer = (page: Page, previous: Tags) =>
+  ((Array.isArray(page.mdMeta.tags) && page.mdMeta.tags) || [])
+    .filter((page): page is string => typeof page === "string")
     .reduce(
       (tags, tag) => ({
         ...tags,
-        [tag]: [...(previous[tag] || []), item],
+        [tag]: [...(previous[tag] || []), page],
       }),
       previous
     );

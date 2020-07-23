@@ -3,9 +3,9 @@
  * the directory's `index.md`.
  */
 interface Directory {
-  name: string;
-  path: string;
-  md: string;
+  readonly name: string;
+  readonly path: string;
+  readonly md: string;
 }
 
 export default Directory;
