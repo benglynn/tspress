@@ -19,7 +19,7 @@ export const expectedDirs = [
   },
 ];
 
-export const expectedItems = [
+export const expectedPages = [
   {
     name: "",
     path: "/",
