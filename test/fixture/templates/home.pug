@@ -1,0 +1,8 @@
+extends layout.pug
+
+block append main
+  if press.tags.vessel
+    ul(role=navigation)
+      each item in press.tags.vessel
+        li
+          a(href=item.press.path)= item.headline
