@@ -10,7 +10,6 @@ import Directory from "./directory";
 interface Page extends Directory {
   readonly mdMeta: { [key: string]: any };
   readonly mdHtml: string;
-  dependencies: ReadonlyArray<string>;
 }
 
 export default Page;

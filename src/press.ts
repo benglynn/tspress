@@ -13,8 +13,13 @@ const press = async <TPage, TContext>(
   name = "",
   path = "/"
 ): Promise<[TPage[], TContext]> => {
-  const md = file(join(content, "index.md"));
-  const dir: Directory = { name, path, md };
+  const mdPath = join(content, "index.md");
+  const dir: Directory = {
+    name,
+    path,
+    md: file(mdPath),
+    dependencies: [mdPath],
+  };
   const page = await totoPage(dir);
   const nextPages = pages.concat(page);
   const nextContext = <TContext>(
