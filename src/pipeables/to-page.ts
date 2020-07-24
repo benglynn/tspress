@@ -8,6 +8,7 @@ const toPage = (dir: Directory): Page => ({
   ...dir,
   mdHtml: "",
   mdMeta: {},
+  html: "",
 });
 
 export default toPage;

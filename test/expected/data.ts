@@ -1,7 +1,7 @@
 import { join } from "path";
 
-const content = join(__dirname, "fixture/content");
-const templates = join(__dirname, "fixture/templates");
+const content = join(__dirname, "../fixture/content");
+const templates = join(__dirname, "../fixture/templates");
 
 const indexDir = {
   name: "",
@@ -36,6 +36,7 @@ const indexPage = {
   ],
   mdHtml: "<h1>Beverage vessels</h1>\n<p>Welcome!</p>",
   mdMeta: { template: "home", tags: ["global"] },
+  html: "",
 };
 
 const frenchPressPage = {
@@ -48,6 +49,7 @@ const frenchPressPage = {
   mdHtml:
     "<h1>French press</h1>\n<p>The French press is also known as a cafetière.</p>",
   mdMeta: { headline: "French press", tags: ["vessel"] },
+  html: "",
 };
 
 const teaPotPage = {
@@ -60,6 +62,7 @@ const teaPotPage = {
   mdHtml:
     "<h1>Tea pot</h1>\n<p>A teapot is a vessel used for steeping tea leaves.</p>",
   mdMeta: { headline: "Tea pot", tags: ["vessel"] },
+  html: "",
 };
 
 export const expectedDirs = [indexDir, frenchPressDir, teaPotDir];
