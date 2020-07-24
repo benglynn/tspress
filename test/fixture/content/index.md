@@ -1,5 +1,5 @@
 ---
-template: 'home.pug'
+template: 'home'
 tags:
  - global
 ---
