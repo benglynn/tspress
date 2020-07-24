@@ -11,27 +11,12 @@ const indexDir = {
   dependencies: [join(content, "index.md")],
 };
 
-const indexPage = {
-  ...indexDir,
-  dependencies: [...indexDir.dependencies, join(templates, "home.pug")],
-  mdHtml: "<h1>Beverage vessels</h1>\n<p>Welcome!</p>",
-  mdMeta: { template: "home", tags: ["global"] },
-};
-
 const frenchPressDir = {
   name: "french-press",
   path: "/french-press/",
   md:
     "---\nheadline: French press\ntags:\n - vessel\n---\n\n# French press\n\nThe French press is also known as a cafetière.",
   dependencies: [join(content, "french-press/index.md")],
-};
-
-const frenchPressPage = {
-  ...frenchPressDir,
-  dependencies: [...frenchPressDir.dependencies, join(templates, "page.pug")],
-  mdHtml:
-    "<h1>French press</h1>\n<p>The French press is also known as a cafetière.</p>",
-  mdMeta: { headline: "French press", tags: ["vessel"] },
 };
 
 const teaPotDir = {
@@ -42,9 +27,36 @@ const teaPotDir = {
   dependencies: [join(content, "tea-pot/index.md")],
 };
 
+const indexPage = {
+  ...indexDir,
+  dependencies: [
+    ...indexDir.dependencies,
+    join(templates, "home.pug"),
+    join(templates, "layout.pug"),
+  ],
+  mdHtml: "<h1>Beverage vessels</h1>\n<p>Welcome!</p>",
+  mdMeta: { template: "home", tags: ["global"] },
+};
+
+const frenchPressPage = {
+  ...frenchPressDir,
+  dependencies: [
+    ...frenchPressDir.dependencies,
+    join(templates, "page.pug"),
+    join(templates, "layout.pug"),
+  ],
+  mdHtml:
+    "<h1>French press</h1>\n<p>The French press is also known as a cafetière.</p>",
+  mdMeta: { headline: "French press", tags: ["vessel"] },
+};
+
 const teaPotPage = {
   ...teaPotDir,
-  dependencies: [...teaPotDir.dependencies, join(templates, "page.pug")],
+  dependencies: [
+    ...teaPotDir.dependencies,
+    join(templates, "page.pug"),
+    join(templates, "layout.pug"),
+  ],
   mdHtml:
     "<h1>Tea pot</h1>\n<p>A teapot is a vessel used for steeping tea leaves.</p>",
   mdMeta: { headline: "Tea pot", tags: ["vessel"] },
