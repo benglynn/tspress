@@ -1,7 +1,8 @@
+import { promisify } from "util";
+import { readFile } from "fs";
 import "mocha";
 import { expect } from "chai";
 import { join } from "path";
-import { readFileSync } from "fs";
 import { press } from "../src/api";
 import toPage from "../src/pipeables/to-page";
 import mdHtml from "../src/pipeables/md-html";
@@ -33,12 +34,15 @@ describe("integration", () => {
   });
 
   it("compiles expected html", async () => {
-    const expected = (name: string) =>
-      readFileSync(join(__dirname, "expected", name), "utf-8");
+    const file = promisify(readFile);
+    const html = ["index", "french-press", "tea-pot"].map((name) =>
+      file(join(__dirname, "expected", `${name}.html`), "utf-8")
+    );
     const { pages, context } = await setup();
+    const [homeHtml, frenchPressHtml, teaPotHtml] = await Promise.all(html);
     const [home, frenchPress, teaPot] = await pipe(pugRender)(pages, context);
-    expect(home.html).to.equal(expected("index.html"));
-    expect(frenchPress.html).to.equal(expected("french-press.html"));
-    expect(teaPot.html).to.equal(expected("tea-pot.html"));
+    expect(home.html).to.equal(homeHtml);
+    expect(frenchPress.html).to.equal(frenchPressHtml);
+    expect(teaPot.html).to.equal(teaPotHtml);
   });
 });
