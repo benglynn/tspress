@@ -2,19 +2,26 @@ import { file, directories } from "./util";
 import { join } from "path";
 import Directory from "./types/directory";
 import Reducer from "./types/reducer";
+import PressContext from "./types/press-context";
 
 const press = async <TPage, TContext>(
-  directory: string,
-  totoPage: (d: Directory) => TPage | Promise<TPage>,
+  content: string,
+  templates: string,
+  totoPage: (d: Directory, c: PressContext) => TPage | Promise<TPage>,
   seed: TContext,
   reducers: { [K in keyof TContext]: Reducer<TPage, TContext[K]> },
   pages: TPage[] = [],
   name = "",
   path = "/"
 ): Promise<[TPage[], TContext]> => {
-  const md = file(join(directory, "index.md"));
-  const dir: Directory = { name, path, md };
-  const page = await totoPage(dir);
+  const mdPath = join(content, path, "index.md");
+  const dir: Directory = {
+    name,
+    path,
+    md: file(mdPath),
+    dependencies: [mdPath],
+  };
+  const page = await totoPage(dir, { content, templates });
   const nextPages = pages.concat(page);
   const nextContext = <TContext>(
     Object.fromEntries(
@@ -26,10 +33,11 @@ const press = async <TPage, TContext>(
       )
     )
   );
-  return directories(directory).reduce(async (previous, dir) => {
+  return directories(join(content, path)).reduce(async (previous, dir) => {
     const [pages, context] = await previous;
     return press(
-      join(directory, dir.name),
+      content,
+      templates,
       totoPage,
       context,
       reducers,
