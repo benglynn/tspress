@@ -13,8 +13,8 @@ const pugRender: PugRender = (pages, context) => {
     const render =
       cache.get(name) ||
       (cache.set(name, compileFile(name)).get(name) as compileTemplate);
-    // TODO: merge page and context into locals and avoid collisions?
-    return { ...page, html: render({ ...page, ...context }) };
+    const locals = { ...page, ...context };
+    return { ...page, html: render(locals) };
   });
 };
 

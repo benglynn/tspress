@@ -39,10 +39,14 @@ describe("integration", () => {
       file(join(__dirname, "expected", `${name}.html`), "utf-8")
     );
     const { pages, context } = await setup();
-    const [homeHtml, frenchPressHtml, teaPotHtml] = await Promise.all(html);
+    const [
+      expectedHomeHtml,
+      expectedFrenchPressHtml,
+      expectedTeaPotHtml,
+    ] = await Promise.all(html);
     const [home, frenchPress, teaPot] = await pipe(pugRender)(pages, context);
-    expect(home.html).to.equal(homeHtml);
-    expect(frenchPress.html).to.equal(frenchPressHtml);
-    expect(teaPot.html).to.equal(teaPotHtml);
+    expect(home.html).to.equal(expectedHomeHtml);
+    expect(frenchPress.html).to.equal(expectedFrenchPressHtml);
+    expect(teaPot.html).to.equal(expectedTeaPotHtml);
   });
 });
