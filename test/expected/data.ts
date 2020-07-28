@@ -1,13 +1,16 @@
 import { join } from "path";
 
-const content = join(__dirname, "fixture/content");
-const templates = join(__dirname, "fixture/templates");
+const content = join(__dirname, "../fixture/content");
+const templates = join(__dirname, "../fixture/templates");
+const homeTemplate = join(templates, "home.pug");
+const pageTemplate = join(templates, "page.pug");
+const layoutTemplate = join(templates, "layout.pug");
 
 const indexDir = {
   name: "",
   path: "/",
   md:
-    "---\ntemplate: 'home'\ntags:\n - global\n---\n\n# Beverage vessels\n\nWelcome!",
+    "---\nheadline: Home\ntemplate: home\ntags:\n - global\n---\n\n# Beverage vessels\n\nWelcome!",
   dependencies: [join(content, "index.md")],
 };
 
@@ -31,35 +34,33 @@ const indexPage = {
   ...indexDir,
   dependencies: [
     ...indexDir.dependencies,
-    join(templates, "home.pug"),
+    homeTemplate,
     join(templates, "layout.pug"),
   ],
   mdHtml: "<h1>Beverage vessels</h1>\n<p>Welcome!</p>",
-  mdMeta: { template: "home", tags: ["global"] },
+  mdMeta: { headline: "Home", template: "home", tags: ["global"] },
+  template: homeTemplate,
+  html: "",
 };
 
 const frenchPressPage = {
   ...frenchPressDir,
-  dependencies: [
-    ...frenchPressDir.dependencies,
-    join(templates, "page.pug"),
-    join(templates, "layout.pug"),
-  ],
+  dependencies: [...frenchPressDir.dependencies, pageTemplate, layoutTemplate],
   mdHtml:
     "<h1>French press</h1>\n<p>The French press is also known as a cafetière.</p>",
   mdMeta: { headline: "French press", tags: ["vessel"] },
+  template: pageTemplate,
+  html: "",
 };
 
 const teaPotPage = {
   ...teaPotDir,
-  dependencies: [
-    ...teaPotDir.dependencies,
-    join(templates, "page.pug"),
-    join(templates, "layout.pug"),
-  ],
+  dependencies: [...teaPotDir.dependencies, pageTemplate, layoutTemplate],
   mdHtml:
     "<h1>Tea pot</h1>\n<p>A teapot is a vessel used for steeping tea leaves.</p>",
   mdMeta: { headline: "Tea pot", tags: ["vessel"] },
+  template: pageTemplate,
+  html: "",
 };
 
 export const expectedDirs = [indexDir, frenchPressDir, teaPotDir];

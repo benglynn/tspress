@@ -1,8 +1,8 @@
 extends layout.pug
 
 block append main
-  if press.tags.vessel
+  if tags.vessel
     ul(role=navigation)
-      each item in press.tags.vessel
+      each item in tags.vessel
         li
-          a(href=item.press.path)= item.headline
+          a(href=item.path)= item.mdMeta.headline
