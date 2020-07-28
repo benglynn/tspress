@@ -1,5 +1,6 @@
 ---
-template: 'home'
+headline: Home
+template: home
 tags:
  - global
 ---

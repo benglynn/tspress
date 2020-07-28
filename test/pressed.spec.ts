@@ -4,7 +4,7 @@ import { join } from "path";
 import { press } from "../src/api";
 import pagePipe from "../src/page-pipe";
 import Directory from "../src/types/directory";
-import { expectedDirs } from "./expected";
+import { expectedDirs } from "./expected/data";
 
 describe("press", () => {
   const setup = () => {

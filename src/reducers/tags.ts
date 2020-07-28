@@ -1,8 +1,5 @@
 import Page from "../types/page";
-
-type Tags = { readonly [key: string]: ReadonlyArray<Page> };
-
-export const seed = <Tags>{};
+import Tags from "../types/tags";
 
 /**
  * Fold an object of tags discovered in a page's metadata, where tags become
@@ -18,3 +15,5 @@ export const reducer = (page: Page, previous: Tags) =>
       }),
       previous
     );
+
+export const seed = <Tags>{};
