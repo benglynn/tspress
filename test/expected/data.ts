@@ -37,7 +37,7 @@ const indexPage = {
     homeTemplate,
     join(templates, "layout.pug"),
   ],
-  mdHtml: "<h1>Beverage vessels</h1>\n<p>Welcome!</p>",
+  mdHtml: "",
   mdMeta: { headline: "Home", template: "home", tags: ["global"] },
   template: homeTemplate,
   html: "",
@@ -46,8 +46,7 @@ const indexPage = {
 const frenchPressPage = {
   ...frenchPressDir,
   dependencies: [...frenchPressDir.dependencies, pageTemplate, layoutTemplate],
-  mdHtml:
-    "<h1>French press</h1>\n<p>The French press is also known as a cafetière.</p>",
+  mdHtml: "",
   mdMeta: { headline: "French press", tags: ["vessel"] },
   template: pageTemplate,
   html: "",
@@ -56,8 +55,7 @@ const frenchPressPage = {
 const teaPotPage = {
   ...teaPotDir,
   dependencies: [...teaPotDir.dependencies, pageTemplate, layoutTemplate],
-  mdHtml:
-    "<h1>Tea pot</h1>\n<p>A teapot is a vessel used for steeping tea leaves.</p>",
+  mdHtml: "",
   mdMeta: { headline: "Tea pot", tags: ["vessel"] },
   template: pageTemplate,
   html: "",

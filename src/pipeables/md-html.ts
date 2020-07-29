@@ -1,5 +1,6 @@
 import Page from "../types/page";
 import showdown from "showdown";
+import CompilePipeable from "../types/compile-pipeable";
 
 showdown.setFlavor("github");
 
@@ -10,10 +11,13 @@ const converter = new showdown.Converter({
 });
 
 /**
- * Create HTML from a directory's markdown.
+ * Create HTML from a directory's markdown for each page.
  */
-const mdHtml = (page: Page): Page => {
-  return { ...page, mdHtml: converter.makeHtml(page.md) };
+const mdHtml: CompilePipeable = (pages) => {
+  return pages.map((page) => ({
+    ...page,
+    mdHtml: converter.makeHtml(page.md),
+  }));
 };
 
 export default mdHtml;
