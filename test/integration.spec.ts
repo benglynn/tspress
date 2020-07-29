@@ -16,7 +16,7 @@ import pagePipe from "../src/page-pipe";
 
 describe("integration", () => {
   const setup = async () => {
-    const toPage_ = pagePipe(toPage, mdHtml, mdMeta, pugDeps);
+    const toPage_ = pagePipe(toPage, mdMeta, pugDeps);
     const [pages, context] = await press(
       join(__dirname, "fixture/content"),
       join(__dirname, "fixture/templates"),
@@ -44,7 +44,8 @@ describe("integration", () => {
       expectedFrenchPressHtml,
       expectedTeaPotHtml,
     ] = await Promise.all(html);
-    const [home, frenchPress, teaPot] = await pipe(pugRender)(pages, context);
+    const render = pipe(mdHtml, pugRender);
+    const [home, frenchPress, teaPot] = await render(pages, context);
     expect(home.html).to.equal(expectedHomeHtml);
     expect(frenchPress.html).to.equal(expectedFrenchPressHtml);
     expect(teaPot.html).to.equal(expectedTeaPotHtml);
