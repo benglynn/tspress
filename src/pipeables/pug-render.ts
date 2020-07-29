@@ -1,11 +1,11 @@
 import { compileFile, compileTemplate } from "pug";
-import Page from "../types/page";
-import CompileContext from "../types/compile-context";
-import Pipeable from "../types/pipeable";
+import CompilePipeable from "../types/compile-pipeable";
 
-type PugRender = Pipeable<ReadonlyArray<Page>, CompileContext>;
-
-const pugRender: PugRender = (pages, context) => {
+/**
+ * render HTML for each page using its pug template and both the page and
+ * compiler context.
+ */
+const pugRender: CompilePipeable = (pages, context) => {
   const cache = new Map<string, compileTemplate>();
   return pages.map((page) => {
     const name = page.template;
