@@ -1,8 +1,7 @@
-import WebpackHooks from "./webpack-hooks";
-import WebpackOptions from "./webpack-options";
+import WebpackCompiler from "./webpack-compiler";
 
 interface WebpackPlugin {
-  apply: (hooks: WebpackHooks, options: WebpackOptions) => void;
+  apply: (compiler: WebpackCompiler) => void;
 }
 
 export default WebpackPlugin;

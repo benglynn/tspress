@@ -3,7 +3,7 @@ import { readFileSync } from "fs";
 import Page from "../types/page";
 import PressContext from "../types/press-context";
 
-const defaultTemplate = "page";
+const defaultTemplate = "page.pug";
 
 /**
  * Build up an array of template dependencies.
@@ -22,7 +22,7 @@ const build = (templates: ReadonlyArray<string>): ReadonlyArray<string> => {
 const pugDeps = (page: Page, context: PressContext): Page => {
   const template = join(
     context.templates,
-    `${page.mdMeta.template || defaultTemplate}.pug`
+    page.mdMeta.template || defaultTemplate
   );
   const dependencies = [...page.dependencies, ...build([template])];
   return { ...page, template, dependencies };

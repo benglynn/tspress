@@ -2,9 +2,9 @@ import WebpackCompilation from "./webpack-compilation";
 
 interface WebpackHooks {
   emit: {
-    tap: (
+    tapAsync: (
       name: string,
-      callback: (compilation: WebpackCompilation) => void
+      callback: (compilation: WebpackCompilation, callback: () => void) => void
     ) => void;
   };
 }
