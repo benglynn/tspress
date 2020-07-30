@@ -14,7 +14,8 @@ const tapAsyncCallback = (
   content: string, // absolute path to markdown directory
   templates: string // absolute path to pug templates
 ) => {
-  const fileTimes = new Map<string, number>();
+  console.log("just once surely?");
+  const fileTimes = new Map<string, number | undefined>();
   const seed = { ...defaultSeed, webpack: webpackSeed };
 
   return (compilation: WebpackCompilation, done: () => void) => {
@@ -25,7 +26,7 @@ const tapAsyncCallback = (
     press(content, templates, toPage, seed, reducers).then(
       ([pages, context]) => {
         console.log("\n*************\ntspress\n");
-        console.log(context);
+        console.log(`changes: ${context.webpack.changed.length}`);
         done();
       }
     );

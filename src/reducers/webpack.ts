@@ -11,7 +11,7 @@ interface Dependencies {
  * Fold all dependencies and changed dependencies for webpack.
  */
 export const webpackReducer = (
-  fileTimes: Map<string, number>,
+  fileTimes: Map<string, number | undefined>,
   compilation: WebpackCompilation
 ): Reducer<Page, Dependencies> => (page, previous) => {
   const additions = page.dependencies.filter(
@@ -21,7 +21,8 @@ export const webpackReducer = (
     compilation.fileDependencies.add(n);
     const then = fileTimes.get(n);
     const now = compilation.fileTimestamps.get(n);
-    return now === undefined || then === undefined || then < now;
+    fileTimes.set(n, now || Date.now());
+    return now === undefined || (then !== undefined && then < now);
   });
   return {
     all: previous.all.concat(additions),
