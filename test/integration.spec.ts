@@ -4,25 +4,17 @@ import "mocha";
 import { expect } from "chai";
 import { join } from "path";
 import { press } from "../src/api";
-import toPage from "../src/pipeables/to-page";
-import mdHtml from "../src/pipeables/md-html";
-import mdMeta from "../src/pipeables/md-meta";
-import pugDeps from "../src/pipeables/pug-deps";
-import pugRender from "../src/pipeables/pug-render";
-import { seed as tagsSeed, reducer as tagsReducer } from "../src/reducers/tags";
 import { expectedPages, expectedContext } from "./expected/data";
-import pipe from "../src/pipe";
-import pagePipe from "../src/page-pipe";
+import { toPage, seed, reducers, render } from "../src/defaults";
 
 describe("integration", () => {
   const setup = async () => {
-    const toPage_ = pagePipe(toPage, mdMeta, pugDeps);
     const [pages, context] = await press(
       join(__dirname, "fixture/content"),
       join(__dirname, "fixture/templates"),
-      toPage_,
-      { tags: tagsSeed },
-      { tags: tagsReducer }
+      toPage,
+      seed,
+      reducers
     );
     return { pages, context };
   };
@@ -44,7 +36,6 @@ describe("integration", () => {
       expectedFrenchPressHtml,
       expectedTeaPotHtml,
     ] = await Promise.all(html);
-    const render = pipe(mdHtml, pugRender);
     const [home, frenchPress, teaPot] = await render(pages, context);
     expect(home.html).to.equal(expectedHomeHtml);
     expect(frenchPress.html).to.equal(expectedFrenchPressHtml);

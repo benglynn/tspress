@@ -1,6 +1,6 @@
 ---
 headline: Home
-template: home
+template: home.pug
 tags:
  - global
 ---
