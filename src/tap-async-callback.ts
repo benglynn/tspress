@@ -24,7 +24,8 @@ const tapAsyncCallback = (
     };
     press(content, templates, toPage, seed, reducers).then(
       ([pages, context]) => {
-        console.log("tapped tspress pressed");
+        console.log("\n*************\ntspress\n");
+        console.log(context);
         done();
       }
     );
