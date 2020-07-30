@@ -17,27 +17,19 @@ const tapAsyncCallback = (
   const fileTimes = new Map<string, number | undefined>();
   const seed = { ...defaultSeed, webpack: webpackSeed };
   return (compilation: WebpackCompilation, done: () => void) => {
-    const reducers = {
-      ...defaultReducers,
-      webpack: webpackReducer(fileTimes, compilation),
-    };
-    press(content, templates, toPage, seed, reducers).then(
-      ([pages, context]) => {
-        if (context.webpack.changed.length === 0) {
-          done();
-          return;
-        }
-        render(pages, context).then((pages) => {
-          pages.map((page) => {
-            compilation.assets[`${page.path}index.html`.substring(1)] = {
-              size: () => page.html.length,
-              source: () => page.html,
-            };
-          });
-          done();
-        });
-      }
-    );
+    const webpack = webpackReducer(fileTimes, compilation);
+    const reducers = { ...defaultReducers, webpack };
+    const pressed = press(content, templates, toPage, seed, reducers);
+    (async () => {
+      const [pages, context] = await pressed;
+      if (context.webpack.changed.length === 0) return;
+      (await render(pages, context)).map((page) => {
+        compilation.assets[`${page.path}index.html`.substring(1)] = {
+          size: () => page.html.length,
+          source: () => page.html,
+        };
+      });
+    })().then(() => done());
   };
 };
 
