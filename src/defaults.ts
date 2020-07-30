@@ -3,7 +3,7 @@ import mdHtml from "./pipeables/md-html";
 import mdMeta from "./pipeables/md-meta";
 import pugDeps from "./pipeables/pug-deps";
 import pugRender from "./pipeables/pug-render";
-import { seed as tagsSeed, reducer as tagsReducer } from "./reducers/tags";
+import { tagsSeed, tagsReducer } from "./reducers/tags";
 import pipe from "./pipe";
 import pagePipe from "./page-pipe";
 

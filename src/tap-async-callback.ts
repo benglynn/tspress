@@ -1,24 +1,34 @@
 import WebpackOptions from "./types/webpack-options";
 import WebpackCompilation from "./types/webpack-compilation";
-import { toPage, seed, reducers, render } from "./defaults";
-import Press from "./press";
+import {
+  toPage,
+  seed as defaultSeed,
+  reducers as defaultReducers,
+} from "./defaults";
 import press from "./press";
-import { reducer } from "./reducers/tags";
+import { webpackReducer, webpackSeed } from "./reducers/webpack";
+import { tagsReducer } from "./reducers/tags";
 
-/**
- * @param options passed to the plugin apply method
- * @param content absolute path to markdown directory
- * @param templates absolute path to pug templates
- */
 const tapAsyncCallback = (
   options: WebpackOptions,
-  content: string,
-  templates: string
-) => (compilation: WebpackCompilation, done: () => void) => {
-  press(content, templates, toPage, seed, reducers).then(([pages, context]) => {
-    console.log("tapped tspress pressed");
-    done();
-  });
+  content: string, // absolute path to markdown directory
+  templates: string // absolute path to pug templates
+) => {
+  const fileTimes = new Map<string, number>();
+  const seed = { ...defaultSeed, webpack: webpackSeed };
+
+  return (compilation: WebpackCompilation, done: () => void) => {
+    const reducers = {
+      ...defaultReducers,
+      webpack: webpackReducer(fileTimes, compilation),
+    };
+    press(content, templates, toPage, seed, reducers).then(
+      ([pages, context]) => {
+        console.log("tapped tspress pressed");
+        done();
+      }
+    );
+  };
 };
 
 export default tapAsyncCallback;
