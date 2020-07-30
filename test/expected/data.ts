@@ -10,7 +10,7 @@ const indexDir = {
   name: "",
   path: "/",
   md:
-    "---\nheadline: Home\ntemplate: home\ntags:\n - global\n---\n\n# Beverage vessels\n\nWelcome!",
+    "---\nheadline: Home\ntemplate: home.pug\ntags:\n - global\n---\n\n# Beverage vessels\n\nWelcome!",
   dependencies: [join(content, "index.md")],
 };
 
@@ -38,7 +38,7 @@ const indexPage = {
     join(templates, "layout.pug"),
   ],
   mdHtml: "",
-  mdMeta: { headline: "Home", template: "home", tags: ["global"] },
+  mdMeta: { headline: "Home", template: "home.pug", tags: ["global"] },
   template: homeTemplate,
   html: "",
 };
