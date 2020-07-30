@@ -48,4 +48,12 @@ describe("webpackReducer", () => {
     expect(all).to.deep.equal(dependencies);
     expect(changed).to.deep.equal(dependencies);
   });
+
+  it("finds no changed files when times have not changed", async () => {
+    const times = { file1: 123, file2: 456, file3: 789 };
+    const reducer = webpackReducer(fileTimeMap(times), compilation(times));
+    const { all, changed } = await reducer(page1, webpackSeed);
+    expect(all).to.deep.equal(dependencies);
+    expect(changed).to.deep.equal([]);
+  });
 });
