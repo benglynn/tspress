@@ -9,6 +9,7 @@
   "types": "dist/api.d.ts",
   "scripts": {
     "prepublishOnly": "npm run build",
+    "publish": "safepublish",
     "build": "rm -r ./dist/* & tsc",
     "lint": "eslint src",
     "test": "npx mocha --require ts-node/register --extensions ts,tsx --watch-files src,test 'test/**/*.{ts,tsx}'"
@@ -28,6 +29,7 @@
   },
   "homepage": "https://github.com/benglynn/press#readme",
   "devDependencies": {
+    "@benglynn/publish": "^1.0.6",
     "@types/chai": "^4.2.11",
     "@types/html-minifier": "^4.0.0",
     "@types/js-yaml": "^3.12.5",
