@@ -1,4 +1,3 @@
-import Page from "../types/page";
 import showdown from "showdown";
 import CompilePipeable from "../types/compile-pipeable";
 
