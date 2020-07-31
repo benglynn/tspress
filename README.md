@@ -40,9 +40,9 @@ A device for brewing coffee.
 
 ## How does Press work?
 
-Press walks the markdown directory and for each it firstly generates a
-[Directory][] and pipes it through a series of transformations into a [Page][];
-and secondly redduces a [CompileContext][] with that page.
+Press walks the markdown directory and for each page firstly pipes a
+[Directory][] through a series of transformations into a [Page][] and secondly
+redduces a site-wide [CompileContext][].
 
 The pages and compile-context may then pass through a compile pipe to create
 HTML.
