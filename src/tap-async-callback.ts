@@ -12,8 +12,8 @@ import { webpackReducer, webpackSeed } from "./reducers/webpack";
 
 const tapAsyncCallback = (
   options: WebpackOptions,
-  content: string, // absolute path to markdown directory
-  templates: string // absolute path to pug templates
+  content: string,
+  templates: string
 ): WebpackTapAsyncCallback => {
   const fileTimes = new Map<string, number | undefined>();
   const seed = { ...defaultSeed, webpack: webpackSeed };

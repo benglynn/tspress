@@ -5,9 +5,6 @@ import PressContext from "../types/press-context";
 
 const defaultTemplate = "page.pug";
 
-/**
- * Build up an array of template dependencies.
- */
 const build = (templates: ReadonlyArray<string>): ReadonlyArray<string> => {
   const template = templates.slice(-1)[0];
   const match = readFileSync(template, "utf-8").match(/^extends\s+(.+)$/m);
@@ -16,9 +13,6 @@ const build = (templates: ReadonlyArray<string>): ReadonlyArray<string> => {
     : templates;
 };
 
-/**
- * Add pug template dependencies.
- */
 const pugDeps = (page: Page, context: PressContext): Page => {
   const template = join(
     context.templates,

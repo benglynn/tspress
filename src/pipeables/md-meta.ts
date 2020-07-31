@@ -1,9 +1,6 @@
 import { load } from "js-yaml";
 import Page from "../types/page";
 
-/**
- * Fills the markdown metadata property with parsed markdown metadata.
- */
 const mdMeta = (page: Page): Page => {
   const match = page.md.match(/^---\n([\s\S]*)\n---/);
   const mdMeta = match === null ? {} : load(match[1]);

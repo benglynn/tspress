@@ -9,9 +9,6 @@ const converter = new showdown.Converter({
   metadata: true,
 });
 
-/**
- * Create HTML from a directory's markdown for each page.
- */
 const mdHtml: CompilePipeable = (pages) => {
   return pages.map((page) => ({
     ...page,

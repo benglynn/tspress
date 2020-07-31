@@ -7,9 +7,6 @@ interface Dependencies {
   changed: ReadonlyArray<string>;
 }
 
-/**
- * Fold all dependencies and changed dependencies for webpack.
- */
 export const webpackReducer = (
   fileTimes: Map<string, number | undefined>,
   compilation: WebpackCompilation

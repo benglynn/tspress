@@ -32,7 +32,7 @@ const blankPage: Page = {
 };
 
 const page1 = { ...blankPage, dependencies };
-const page2 = { ...blankPage, dependencies };
+const page2 = { ...blankPage, dependencies: ["file1"] };
 
 describe("webpackReducer", () => {
   it("finds each dependency only once", async () => {
