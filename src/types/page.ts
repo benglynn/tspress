@@ -8,7 +8,7 @@ import Directory from "./directory";
  * input and output type of each pipeable in the compile pipe.
  */
 interface Page extends Directory {
-  readonly mdMeta: { [key: string]: any };
+  readonly mdMeta: { [key: string]: unknown };
   readonly mdHtml: string;
   readonly html: string;
   readonly template: string;

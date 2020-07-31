@@ -22,7 +22,7 @@ const build = (templates: ReadonlyArray<string>): ReadonlyArray<string> => {
 const pugDeps = (page: Page, context: PressContext): Page => {
   const template = join(
     context.templates,
-    page.mdMeta.template || defaultTemplate
+    (page.mdMeta.template as string | undefined) || defaultTemplate
   );
   const dependencies = [...page.dependencies, ...build([template])];
   return { ...page, template, dependencies };
