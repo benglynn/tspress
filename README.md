@@ -1,4 +1,4 @@
-![Node.js CI](https://github.com/benglynn/tspress/workflows/Press%20CI/badge.svg) 
+![Node.js CI](https://github.com/benglynn/press/workflows/Press%20CI/badge.svg) 
 
 # Press
 
@@ -74,4 +74,4 @@ npm test
 [Page]: ./src/types/page.ts
 [CompileContext]: ./src/types/compile-context.ts
 [Pug]: https://pugjs.org
-[issues]: https://github.com/benglynn/tspress/issues
+[issues]: https://github.com/benglynn/press/issues
