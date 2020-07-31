@@ -1,5 +1,6 @@
 import WebpackOptions from "./types/webpack-options";
 import WebpackCompilation from "./types/webpack-compilation";
+import WebpackTapAsyncCallback from "./types/webpack-tap-async-callback";
 import {
   toPage,
   seed as defaultSeed,
@@ -13,7 +14,7 @@ const tapAsyncCallback = (
   options: WebpackOptions,
   content: string, // absolute path to markdown directory
   templates: string // absolute path to pug templates
-) => {
+): WebpackTapAsyncCallback => {
   const fileTimes = new Map<string, number | undefined>();
   const seed = { ...defaultSeed, webpack: webpackSeed };
   return (compilation: WebpackCompilation, done: () => void) => {

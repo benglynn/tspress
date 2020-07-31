@@ -23,14 +23,16 @@ const press = async <TPage, TContext>(
   };
   const page = await totoPage(dir, { content, templates });
   const nextPages = pages.concat(page);
-  const nextContext = <TContext>(
-    Object.fromEntries(
-      await Promise.all(
-        Object.entries<Reducer<TPage, any>>(reducers).map(
-          async ([key, reducer]) =>
-            <[string, any]>[key, await reducer(page, (<any>seed)[key])]
-        )
-      )
+  const nextContext = <TContext>Object.fromEntries(
+    await Promise.all(
+      Object.entries(
+        reducers as {
+          [key: string]: <TSlice>(p: TPage, s: TSlice) => Promise<TSlice>;
+        }
+      ).map(async ([key, reducer]) => [
+        key,
+        await reducer(page, seed[key as keyof TContext]),
+      ])
     )
   );
   return directories(join(content, path)).reduce(async (previous, dir) => {
