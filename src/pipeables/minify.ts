@@ -5,9 +5,6 @@ const options = {
   collapseWhitespace: true,
 };
 
-/**
- * minify each page's html.
- */
 const minify: CompilePipeable = (pages) =>
   pages.map((page) => ({
     ...page,
