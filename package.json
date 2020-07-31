@@ -1,10 +1,10 @@
 {
-  "name": "@benglynn/tspress",
-  "version": "1.0.0-alpha.0",
+  "name": "@benglynn/press",
+  "version": "1.1.0-beta.0",
   "engines": {
     "node": ">=12.16.3"
   },
-  "description": "TypeScript experiment with new Press compiler architecture",
+  "description": "Joyful static site publishing",
   "main": "dist/api.js",
   "types": "dist/api.d.ts",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/benglynn/tspress.git"
+    "url": "git+https://github.com/benglynn/press.git"
   },
   "keywords": [
     "typescript",
@@ -24,9 +24,9 @@
   "author": "Ben Glynn",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/benglynn/tspress/issues"
+    "url": "https://github.com/benglynn/press/issues"
   },
-  "homepage": "https://github.com/benglynn/tspress#readme",
+  "homepage": "https://github.com/benglynn/press#readme",
   "devDependencies": {
     "@types/chai": "^4.2.11",
     "@types/html-minifier": "^4.0.0",
