@@ -12,7 +12,7 @@ const createPressWebpack = (
   return {
     apply: ({ hooks, options }) => {
       hooks.emit.tapAsync(
-        "tspress-webpack",
+        "press-webpack",
         tapAsyncCallback(options, content, templates)
       );
     },
