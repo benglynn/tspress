@@ -25,6 +25,7 @@
   "homepage": "https://github.com/benglynn/tspress#readme",
   "devDependencies": {
     "@types/chai": "^4.2.11",
+    "@types/html-minifier": "^4.0.0",
     "@types/js-yaml": "^3.12.5",
     "@types/mocha": "^7.0.2",
     "@types/node": "^14.0.21",
@@ -38,5 +39,7 @@
     "ts-node": "^8.10.2",
     "typescript": "^3.9.6"
   },
-  "dependencies": {}
+  "dependencies": {
+    "html-minifier": "^4.0.0"
+  }
 }
