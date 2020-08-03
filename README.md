@@ -42,7 +42,7 @@ A device for brewing coffee.
 
 Press walks the markdown directory and for each page firstly pipes a
 [Directory][] through a series of transformations into a [Page][] and secondly
-redduces a site-wide [CompileContext][].
+reduces a site-wide [CompileContext][].
 
 The pages and compile-context may then pass through a compile pipe to create
 HTML.
@@ -58,9 +58,10 @@ template engine if you replace the pug sepcific parts.
 
 *Much more on customisation TODO...*
 
-## Press is a work in progress
+## More transformations in the pipeline
 
-More pipeables and reducers are on the way, please see [issues][] for more.
+It's early days, more pipeables and reducers are on the way, please see
+[issues][] for details.
 
 ## Developing Press
 ```bash
