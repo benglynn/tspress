@@ -2,7 +2,7 @@ import "mocha";
 import { expect } from "chai";
 import { join } from "path";
 import { press } from "../src/api";
-import pagePipe from "../src/page-pipe";
+import pagePipe from "../src/page-pipe/page-pipe";
 import Directory from "../src/types/directory";
 import { expectedDirs } from "./expected/data";
 

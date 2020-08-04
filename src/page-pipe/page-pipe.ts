@@ -1,7 +1,7 @@
-import pipe from "./pipe";
-import Directory from "./types/directory";
-import Pipeable from "./types/pipeable";
-import PressContext from "./types/press-context";
+import pipe from "../pipe";
+import Directory from "../types/directory";
+import Pipeable from "../types/pipeable";
+import PressContext from "../types/press-context";
 
 const pagePipe = <TPage>(
   toPage: (dir: Directory, context: PressContext) => TPage | Promise<TPage>,
