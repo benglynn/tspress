@@ -1,14 +1,13 @@
 import { minify as squash } from "html-minifier";
-import CompilePipeable from "../types/compile-pipeable";
+import RenderPipeable from "../types/render-pipeable";
 
 const options = {
   collapseWhitespace: true,
 };
 
-const minify: CompilePipeable = (pages) =>
-  pages.map((page) => ({
-    ...page,
-    html: squash(page.html, options),
-  }));
+const minify: RenderPipeable = (page) => ({
+  ...page,
+  html: squash(page.html, options),
+});
 
 export default minify;

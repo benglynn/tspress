@@ -4,25 +4,27 @@ import { join } from "path";
 import { press } from "../src/api";
 import pagePipe from "../src/page-pipe/page-pipe";
 import Directory from "../src/types/directory";
+import Page from "../src/types/page";
+import pageFromDir from "../src/page-pipe/page-from-dir";
 import { expectedDirs } from "./expected/data";
 
 describe("press", () => {
   const setup = () => {
-    const toPage = (dir: Directory) => dir;
+    const pageFromDir = (dir: Directory) => dir;
     const seed = { names: <string[]>[], pageCount: 0 };
     const contentPath = join(__dirname, "fixture/content");
     const templatePath = join(__dirname, "fixture/templates");
-    return { toPage, seed, contentPath, templatePath };
+    return { pageFromDir, seed, contentPath, templatePath };
   };
 
   it("parse each directory", async () => {
-    const { toPage, contentPath, templatePath } = setup();
-    const [pages] = await press(contentPath, templatePath, toPage, {}, {});
+    const { pageFromDir, contentPath, templatePath } = setup();
+    const [pages] = await press(contentPath, templatePath, pageFromDir, {}, {});
     expect(pages).to.deep.equal(expectedDirs);
   });
 
   it("folds context with reducers", async () => {
-    const { toPage, seed, contentPath, templatePath } = setup();
+    const { pageFromDir, seed, contentPath, templatePath } = setup();
     const reducers = {
       names: (dir: Directory, previous: string[]) => previous.concat(dir.name),
       pageCount: (dir: Directory, previous: number) => previous + 1,
@@ -30,7 +32,7 @@ describe("press", () => {
     const [pages, context] = await press(
       contentPath,
       templatePath,
-      toPage,
+      pageFromDir,
       seed,
       reducers
     );
@@ -42,7 +44,7 @@ describe("press", () => {
   });
 
   it("folds context with async reducers", async () => {
-    const { toPage, seed, contentPath, templatePath } = setup();
+    const { pageFromDir, seed, contentPath, templatePath } = setup();
     const reducers = {
       names: (dir: Directory, previous: string[]) =>
         Promise.resolve(previous.concat(dir.name)),
@@ -52,7 +54,7 @@ describe("press", () => {
     const [dirs, context] = await press(
       contentPath,
       templatePath,
-      toPage,
+      pageFromDir,
       seed,
       reducers
     );
@@ -63,10 +65,10 @@ describe("press", () => {
     });
   });
 
-  it("pipes directories through pipeables", async () => {
+  it("pipes directories through page pipeables", async () => {
     const { contentPath, templatePath } = setup();
-    const changeName = (dir: Directory): Directory => ({
-      ...dir,
+    const changeName = (dir: Directory): Page => ({
+      ...pageFromDir(dir),
       name: "pipe",
     });
     const [dirs] = await press(
@@ -82,8 +84,8 @@ describe("press", () => {
 
   it("pipes directories through async pipeables", async () => {
     const { contentPath, templatePath } = setup();
-    const changeName = (dir: Directory): Promise<Directory> =>
-      Promise.resolve({ ...dir, name: "async pipe" });
+    const changeName = (dir: Directory): Promise<Page> =>
+      Promise.resolve({ ...pageFromDir(dir), name: "async pipe" });
     const [dirs] = await press(
       contentPath,
       templatePath,

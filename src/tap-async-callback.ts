@@ -2,7 +2,7 @@ import WebpackOptions from "./types/webpack-options";
 import WebpackCompilation from "./types/webpack-compilation";
 import WebpackTapAsyncCallback from "./types/webpack-tap-async-callback";
 import {
-  toPage,
+  pageFromDir,
   seed as defaultSeed,
   reducers as defaultReducers,
   render,
@@ -20,7 +20,7 @@ const tapAsyncCallback = (
   return (compilation: WebpackCompilation, done: () => void) => {
     const webpack = webpackReducer(fileTimes, compilation);
     const reducers = { ...defaultReducers, webpack };
-    const pressed = press(content, templates, toPage, seed, reducers);
+    const pressed = press(content, templates, pageFromDir, seed, reducers);
     (async () => {
       const [pages, context] = await pressed;
       if (context.webpack.changed.length === 0) return;
