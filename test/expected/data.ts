@@ -18,7 +18,8 @@ const frenchPressDir = {
   name: "french-press",
   path: "/french-press/",
   md:
-    "---\nheadline: French press\ntags:\n - vessel\n---\n\n# French press\n\nThe French press is also known as a cafetière.",
+    "---\nheadline: French press\ntags:\n - vessel\n---\n\n# French press\n\nThe French press is also known as a " +
+    'cafetière.\n\n```javascript\nconst coffee = pot.add("coffee").add("water").wait(2).press();\n```',
   dependencies: [join(content, "french-press/index.md")],
 };
 
