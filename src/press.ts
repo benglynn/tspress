@@ -7,7 +7,7 @@ import PressContext from "./types/press-context";
 const press = async <TPage, TContext>(
   content: string,
   templates: string,
-  totoPage: (d: Directory, c: PressContext) => TPage | Promise<TPage>,
+  pageFromDir: (d: Directory, c: PressContext) => TPage | Promise<TPage>,
   seed: TContext,
   reducers: { [K in keyof TContext]: Reducer<TPage, TContext[K]> },
   pages: TPage[] = [],
@@ -21,7 +21,7 @@ const press = async <TPage, TContext>(
     md: file(mdPath),
     dependencies: [mdPath],
   };
-  const page = await totoPage(dir, { content, templates });
+  const page = await pageFromDir(dir, { content, templates });
   const nextPages = pages.concat(page);
   const nextContext = <TContext>Object.fromEntries(
     await Promise.all(
@@ -40,7 +40,7 @@ const press = async <TPage, TContext>(
     return press(
       content,
       templates,
-      totoPage,
+      pageFromDir,
       context,
       reducers,
       pages,

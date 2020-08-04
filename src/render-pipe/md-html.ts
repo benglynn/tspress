@@ -1,5 +1,5 @@
 import showdown from "showdown";
-import CompilePipeable from "../types/compile-pipeable";
+import RenderPipeable from "../types/render-pipeable";
 
 showdown.setFlavor("github");
 
@@ -9,11 +9,9 @@ const converter = new showdown.Converter({
   metadata: true,
 });
 
-const mdHtml: CompilePipeable = (pages) => {
-  return pages.map((page) => ({
-    ...page,
-    mdHtml: converter.makeHtml(page.md),
-  }));
-};
+const mdHtml: RenderPipeable = (page) => ({
+  ...page,
+  mdHtml: converter.makeHtml(page.md),
+});
 
 export default mdHtml;

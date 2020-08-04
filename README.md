@@ -42,14 +42,14 @@ A device for brewing coffee.
 
 Press walks the markdown directory and for each page firstly pipes a
 [Directory][] through a series of transformations into a [Page][] and secondly
-reduces a site-wide [CompileContext][].
+reduces a site-wide [RenderContext][].
 
-The pages and compile-context may then pass through a compile pipe to create
+The pages and render-context may then pass through a render pipe to create
 HTML.
 
 ## Press is built to be customised
 
-The transformations and compiler-context can be anything you want. Presss is
+The transformations and render-context can be anything you want. Presss is
 designed to accept any pipeables and reducers with compatible input and output
 types.
 
@@ -73,6 +73,6 @@ npm test
 [Press demo]: https://github.com/benglynn/press-demo
 [Directory]: ./src/types/directory.ts
 [Page]: ./src/types/page.ts
-[CompileContext]: ./src/types/compile-context.ts
+[RenderContext]: ./src/types/render-context.ts
 [Pug]: https://pugjs.org
 [issues]: https://github.com/benglynn/press/issues

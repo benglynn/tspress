@@ -1,7 +1,7 @@
 import Directory from "../types/directory";
 import Page from "../types/page";
 
-const toPage = (dir: Directory): Page => ({
+const pageFromDir = (dir: Directory): Page => ({
   ...dir,
   mdHtml: "",
   mdMeta: {},
@@ -9,4 +9,4 @@ const toPage = (dir: Directory): Page => ({
   template: "",
 });
 
-export default toPage;
+export default pageFromDir;

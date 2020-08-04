@@ -5,14 +5,14 @@ import { expect } from "chai";
 import { join } from "path";
 import { press } from "../src/api";
 import { expectedPages, expectedContext } from "./expected/data";
-import { toPage, seed, reducers, render } from "../src/defaults";
+import { pageFromDir, seed, reducers, render } from "../src/defaults";
 
 describe("integration", () => {
   const setup = async () => {
     const [pages, context] = await press(
       join(__dirname, "fixture/content"),
       join(__dirname, "fixture/templates"),
-      toPage,
+      pageFromDir,
       seed,
       reducers
     );
@@ -25,7 +25,7 @@ describe("integration", () => {
     expect(context).to.deep.equal(expectedContext);
   });
 
-  it("compiles expected html", async () => {
+  it("renders expected html", async () => {
     const file = promisify(readFile);
     const html = ["index", "french-press", "tea-pot"].map((name) =>
       file(join(__dirname, "expected", `${name}.html`), "utf-8")
