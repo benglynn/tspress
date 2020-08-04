@@ -1,6 +1,6 @@
 {
   "name": "@benglynn/press",
-  "version": "1.1.0",
+  "version": "1.2.0-benglynn.1",
   "engines": {
     "node": ">=12.16.3"
   },
@@ -9,7 +9,7 @@
   "types": "dist/api.d.ts",
   "scripts": {
     "prepublishOnly": "npm run build",
-    "publish": "safepublish",
+    "safepublish": "safepublish",
     "build": "rm -r ./dist/* & tsc",
     "lint": "eslint src",
     "test": "npx mocha --require ts-node/register --extensions ts,tsx --watch-files src,test 'test/**/*.{ts,tsx}'"
@@ -32,7 +32,8 @@
     "html-minifier": "^4.0.0",
     "js-yaml": "^3.14.0",
     "pug": "^3.0.0",
-    "showdown": "^1.9.1"
+    "showdown": "^1.9.1",
+    "prismjs": "^1.20.0"
   },
   "devDependencies": {
     "@benglynn/publish": "^1.0.6",
@@ -52,7 +53,6 @@
     "eslint-plugin-prettier": "^3.1.4",
     "mocha": "^8.0.1",
     "prettier": "^2.0.5",
-    "prismjs": "^1.20.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.6"
   }
