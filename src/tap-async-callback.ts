@@ -24,7 +24,7 @@ const tapAsyncCallback = (
     (async () => {
       const [pages, context] = await pressed;
       if (context.webpack.changed.length === 0) return;
-      (await render(pages, context)).map((page) => {
+      (await render()(pages, context)).map((page) => {
         compilation.assets[`${page.path}index.html`.substring(1)] = {
           size: () => page.html.length,
           source: () => page.html,

@@ -36,7 +36,7 @@ describe("integration", () => {
       expectedFrenchPressHtml,
       expectedTeaPotHtml,
     ] = await Promise.all(html);
-    const [home, frenchPress, teaPot] = await render(pages, context);
+    const [home, frenchPress, teaPot] = await render()(pages, context);
     expect(home.html).to.equal(expectedHomeHtml);
     expect(frenchPress.html).to.equal(expectedFrenchPressHtml);
     expect(teaPot.html).to.equal(expectedTeaPotHtml);
