@@ -1,7 +1,7 @@
 import RenderPipeable from "../types/render-pipeable";
 import prism from "prismjs";
 
-const extraLangs = ["typescript"];
+const extraLangs = ["bash", "typescript", "less", "scss", "json"];
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("prismjs/components/")(extraLangs);
 
