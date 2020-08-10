@@ -1,8 +1,8 @@
 extends layout.pug
 
 block append main
-  if tags2.vessel
+  if tags.vessel
     ul(role=navigation)
-      each path in tags2.vessel
+      each path in tags.vessel
         li
           a(href=path)= pagesMap[path].mdMeta.headline

@@ -1,8 +1,8 @@
 import PagesMap from "./pages-map";
-import Tags2 from "./tags2";
+import Tags from "./tags";
 
 interface RenderContext {
-  tags2: Tags2;
+  tags: Tags;
   pagesMap: PagesMap;
 }
 

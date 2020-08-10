@@ -9,16 +9,16 @@ import highlightCode from "./render-pipe/highlight-code";
 import pugRender from "./render-pipe/pug-render";
 import minify from "./render-pipe/minify";
 import RenderContext from "./types/render-context";
-import { tags2Seed, tags2Reducer } from "./reducers/tags2";
+import { tagsSeed, tagsReducer } from "./reducers/tags";
 import { pagesMapSeed, pagesMapReducer } from "./reducers/pages-map";
 
 export const pageFromDir = pagePipe(pageFromDir_, mdMeta, pugDeps);
 export const seed: RenderContext = {
-  tags2: tags2Seed,
+  tags: tagsSeed,
   pagesMap: pagesMapSeed,
 };
 export const reducers = {
-  tags2: tags2Reducer,
+  tags: tagsReducer,
   pagesMap: pagesMapReducer,
 };
 

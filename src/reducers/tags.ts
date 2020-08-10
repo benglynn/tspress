@@ -1,7 +1,7 @@
 import Page from "../types/page";
-import Tags2 from "../types/tags2";
+import Tags from "../types/tags";
 
-export const tags2Reducer = (page: Page, previous: Tags2): Tags2 =>
+export const tagsReducer = (page: Page, previous: Tags): Tags =>
   ((Array.isArray(page.mdMeta.tags) && page.mdMeta.tags) || [])
     .filter((page): page is string => typeof page === "string")
     .reduce(
@@ -12,4 +12,4 @@ export const tags2Reducer = (page: Page, previous: Tags2): Tags2 =>
       previous
     );
 
-export const tags2Seed = <Tags2>{};
+export const tagsSeed = <Tags>{};

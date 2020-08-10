@@ -67,7 +67,7 @@ export const expectedDirs = [indexDir, frenchPressDir, teaPotDir];
 export const expectedPages = [indexPage, frenchPressPage, teaPotPage];
 
 export const expectedContext = {
-  tags2: {
+  tags: {
     global: [indexPage.path],
     vessel: [frenchPressPage.path, teaPotPage.path],
   },

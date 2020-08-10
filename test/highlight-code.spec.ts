@@ -24,7 +24,7 @@ const expected =
   'const drink = (name === "Bob" &amp;&amp; "Coffee") || "Tea";';
 
 const context: RenderContext = {
-  tags2: {},
+  tags: {},
   pagesMap: {},
 };
 

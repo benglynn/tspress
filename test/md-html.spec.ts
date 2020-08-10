@@ -30,7 +30,7 @@ const page: Page = {
 };
 
 const context: RenderContext = {
-  tags2: {},
+  tags: {},
   pagesMap: {},
 };
 
