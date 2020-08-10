@@ -71,4 +71,13 @@ export const expectedContext = {
     global: [indexPage],
     vessel: [frenchPressPage, teaPotPage],
   },
+  tags2: {
+    global: [indexPage.path],
+    vessel: [frenchPressPage.path, teaPotPage.path],
+  },
+  pagesMap: {
+    [indexPage.path]: indexPage,
+    [frenchPressPage.path]: frenchPressPage,
+    [teaPotPage.path]: teaPotPage,
+  },
 };

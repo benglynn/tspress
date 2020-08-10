@@ -25,6 +25,8 @@ const expected =
 
 const context: RenderContext = {
   tags: {},
+  tags2: {},
+  pagesMap: {},
 };
 
 describe("highlightCode", () => {
