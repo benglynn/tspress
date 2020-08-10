@@ -3,6 +3,6 @@ extends layout.pug
 block append main
   if tags.vessel
     ul(role=navigation)
-      each item in tags.vessel
+      each path in tags.vessel
         li
-          a(href=item.path)= item.mdMeta.headline
+          a(href=path)= pagesMap[path].mdMeta.headline

@@ -7,7 +7,7 @@ export const tagsReducer = (page: Page, previous: Tags): Tags =>
     .reduce(
       (tags, tag) => ({
         ...tags,
-        [tag]: [...(previous[tag] || []), page],
+        [tag]: [...(previous[tag] || []), page.path],
       }),
       previous
     );

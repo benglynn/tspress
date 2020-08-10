@@ -68,7 +68,12 @@ export const expectedPages = [indexPage, frenchPressPage, teaPotPage];
 
 export const expectedContext = {
   tags: {
-    global: [indexPage],
-    vessel: [frenchPressPage, teaPotPage],
+    global: [indexPage.path],
+    vessel: [frenchPressPage.path, teaPotPage.path],
+  },
+  pagesMap: {
+    [indexPage.path]: indexPage,
+    [frenchPressPage.path]: frenchPressPage,
+    [teaPotPage.path]: teaPotPage,
   },
 };

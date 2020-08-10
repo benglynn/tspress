@@ -31,6 +31,7 @@ const page: Page = {
 
 const context: RenderContext = {
   tags: {},
+  pagesMap: {},
 };
 
 describe("mdHtml", () => {
