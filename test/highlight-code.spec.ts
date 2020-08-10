@@ -21,7 +21,7 @@ const page: Page = {
 
 const expected =
   "type F = &lt;T>(s: T) => T;\nconst fun: F = (s) => s;\n" +
-  'const drink = (name === "Bob" &amp;&amp; "Coffee") || "Tea";}';
+  'const drink = (name === "Bob" &amp;&amp; "Coffee") || "Tea";';
 
 const context: RenderContext = {
   tags: {},

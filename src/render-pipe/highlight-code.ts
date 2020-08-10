@@ -19,7 +19,7 @@ const highlightCode: RenderPipeable = (page) => ({
       .replace(/&lt;/g, "<")
       .replace(/&amp;/g, "&");
     const highlighted = prism.highlight(unescaped, prismLang, langCode);
-    return `<pre ${css}"><code ${css}>${highlighted}}</code></pre>`;
+    return `<pre ${css}"><code ${css}>${highlighted}</code></pre>`;
   }),
 });
 
